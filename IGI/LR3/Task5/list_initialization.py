@@ -33,13 +33,13 @@ def input_float_list() -> list:
     return lst
 
 
-def generate_float_list() -> list:
+def generate_float_list():
     """
-    Generate a list of float numbers automatically (e.g., random or simple sequence).
+    Generate a sequence of random float numbers automatically (e.g., random floats).
     The user specifies how many numbers to generate.
 
-    Returns:
-        list: A list of float values (in this example, random floats).
+    Yields:
+        float: A random float value between -10.0 and 10.0.
     """
     while True:
         n_str = input("How many random elements do you want to generate? ")
@@ -51,7 +51,6 @@ def generate_float_list() -> list:
             break
         except ValueError:
             print("Invalid input. Please enter a valid integer.")
-    
-    lst = [random.uniform(-10.0, 10.0) for _ in range(n)]
-    print(f"Generated list: {lst}")
-    return lst
+
+    for _ in range(n):
+        yield random.uniform(-10.0, 10.0)

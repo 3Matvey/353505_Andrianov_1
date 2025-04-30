@@ -2,7 +2,7 @@
 Lab #3 - Task 3
 Program Name: Count Uppercase English Letters
 Version: 1.0
-Developer: Your Name
+Developer: Matvey Andrianov
 Date: 2025-04-09
 
 Purpose:

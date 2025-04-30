@@ -49,7 +49,7 @@ def main_menu():
         elif choice == '5':
             main_task5()
         elif choice == '0':
-            print("Exiting the program. Goodbye!")
+            print("Exiting the program.")
             break
         else:
             print("Invalid input. Please enter a number between 0 and 5.")

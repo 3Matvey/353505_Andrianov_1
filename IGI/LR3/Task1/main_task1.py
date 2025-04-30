@@ -1,7 +1,7 @@
 """
 Lab 1 - Series Expansion Calculation for sin(x)
 Program Version: 1.0
-Developer: Your Name (Replace with your full name)
+Developer: Matvey Andrianov
 Date of Development: 2025-04-09
 
 Description:

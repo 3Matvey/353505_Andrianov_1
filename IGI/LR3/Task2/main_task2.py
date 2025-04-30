@@ -2,7 +2,7 @@
 Lab #3 - Task 2
 Program Name: Summation of Squares
 Version: 1.0
-Developer: Your Name
+Developer: Matvey Andrianov
 Date: 2025-04-09
 
 Purpose:

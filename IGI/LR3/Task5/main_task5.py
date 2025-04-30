@@ -2,7 +2,7 @@
 Lab #3 - Task 5
 Program Name: Processing a list of real numbers
 Version: 1.0
-Developer: Your Name
+Developer: Matvey Andrianov
 Date: 2025-04-09
 
 Purpose:
@@ -37,7 +37,7 @@ def main_task5():
         if choice == '1':
             numbers = input_float_list()
         else:
-            numbers = generate_float_list()
+            numbers = list(generate_float_list())
 
         # Display the list to the user
         print(f"\nYour list: {numbers}")
