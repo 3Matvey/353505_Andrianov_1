@@ -1,1 +1,5 @@
-1
+Hello World! This is a test text for analysis.
+It contains various words like: Python, Programming, Test, Example.
+Some words end with 'e': like, example, code.
+The text has punctuation marks, and some words are followed by them.
+This is a test for vowel and consonant analysis. 
