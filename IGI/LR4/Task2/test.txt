@@ -1,0 +1,11 @@
+This is a sample text for testing the program. It includes various sentences, such as declarative ones, interrogative ones? And even exclamatory ones! 
+
+Here are some prices: 23.78 USD, 100 RUR, 45.67 EU. Invalid examples: 22 UDD, 0.002 USD.
+
+Words containing letters from f to y: fly, gym, happy, yellow, zoo. 
+
+Short words: cat, dog, apple, bat, car. The shortest word ending with 'a' is "banana".
+
+Smileys: :) ;-) :(( :]] ;--[[[ 
+
+This text also has some numbers and symbols: 123, 456, 789. Let's see how the program handles them!
