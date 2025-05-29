@@ -58,18 +58,18 @@ class GeneralAnalyzerMixin:
     """Общие задачи (кол-во предложений, средняя длина и т.п.)."""
 
     def count_sentences(self):
-        lst = re.findall(r'[^.!?]*[.!?]', self.text, flags=re.MULTILINE)
+        lst = re.findall(r'[^.!?]*[.!?]', self.text, flags=re.MULTILINE) # поиск предложений, заканчивающихся на один из этих знаков
         self.results['Total sentences'] = len(lst)
 
     def count_sentence_types(self):
-        endings = re.findall(r'([.!?])', self.text)
+        endings = re.findall(r'([.!?])', self.text) # поиска знаков конца предложения и их классификации
         self.results['Declarative sentences']   = endings.count('.')
         self.results['Interrogative sentences'] = endings.count('?')
         self.results['Exclamatory sentences']   = endings.count('!')
 
     def average_sentence_length(self):
-        sents = [s.strip() for s in re.split(r'[.!?]', self.text) if s.strip()]
-        total_chars = sum(len(w) for sent in sents for w in re.findall(r'\w+', sent))
+        sents = [s.strip() for s in re.split(r'[.!?]', self.text) if s.strip()] #количество различных типов предложений
+        total_chars = sum(len(w) for sent in sents for w in re.findall(r'\w+', sent))  #поиск всех слов в тексте
         avg = total_chars / len(sents) if sents else 0
         self.results['Average sentence length'] = round(avg, 2)
 
@@ -80,7 +80,7 @@ class GeneralAnalyzerMixin:
 
     def count_smileys(self):
         # : or ;  then zero-or-more -  then one-or-more of same bracket () or []
-        patt = r'[:;]-*([\(\)\[\]])\1*'
+        patt = r'[:;]-*([\(\)\[\]])\1*' #смайлы в тексте, состоящие из двоеточия/точки с запятой, за которым идут скобки, которые могут повторяться.
         self.results['Smiley count'] = len(re.findall(patt, self.text))
 
     def process_general_tasks(self):
@@ -100,11 +100,11 @@ class SpecificAnalyzerMixin:
     """
 
     def extract_uppercase_letters(self):
-        letters = re.findall(r'[A-Z]', self.text)
+        letters = re.findall(r'[A-Z]', self.text)#zaglavnie
         self.results['Uppercase letters'] = ''.join(letters)
 
     def replace_abc_pattern(self):
-        patt = re.compile(r'a+b{2,}c+')
+        patt = re.compile(r'a+b{2,}c+')#последовательности в виде a+, затем b (минимум два раза), затем c+
         # делаем замену
         self.modified_text = patt.sub('qqq', self.text)
         # считаем, сколько было замен
@@ -112,7 +112,7 @@ class SpecificAnalyzerMixin:
         self.results['Replacements count'] = count
 
     def count_max_length_words(self):
-        words = re.findall(r'\b\w+\b', self.text)
+        words = re.findall(r'\b\w+\b', self.text)#все 
         if not words:
             self.results['Max length words count'] = 0
             return
@@ -122,11 +122,11 @@ class SpecificAnalyzerMixin:
         self.results['Max length words'] = max_words
 
     def extract_words_with_punct(self):
-        lst = re.findall(r'\b\w+(?=[\.,])', self.text)
+        lst = re.findall(r'\b\w+(?=[\.,])', self.text)# ищет слова перед запятой или точкой
         self.results['Words before comma/dot'] = lst
 
     def find_longest_e_word(self):
-        words = re.findall(r'\b\w+e\b', self.text, flags=re.IGNORECASE)
+        words = re.findall(r'\b\w+e\b', self.text, flags=re.IGNORECASE)#Используется для поиска слов, заканчивающихся на e
         if words:
             max_len = max(len(w) for w in words)
             longest = [w for w in words if len(w) == max_len]
