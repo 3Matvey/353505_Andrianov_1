@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}О компании — Zoo Shop{% endblock %}
+
+{% block content %}
+  <h1>О компании</h1>
+  {% for block in info_blocks %}
+    <h2>{{ block.title }}</h2>
+    <div>{{ block.content|linebreaks }}</div>
+  {% endfor %}
+{% endblock %}

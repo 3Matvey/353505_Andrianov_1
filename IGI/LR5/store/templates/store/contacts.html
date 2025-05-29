@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Контакты — Zoo Shop{% endblock %}
+
+{% block content %}
+  <h1>Контакты</h1>
+  <div class="row">
+    {% for p in people %}
+      <div class="col-md-4 mb-3">
+        <div class="card h-100">
+          {% if p.photo %}
+            <img src="{{ p.photo.url }}" class="card-img-top" alt="{{ p.name }}">
+          {% endif %}
+          <div class="card-body">
+            <h5>{{ p.name }}</h5>
+            <p><em>{{ p.role }}</em></p>
+            <p>📞 {{ p.phone }}<br>✉️ {{ p.email }}</p>
+            <p>{{ p.description|linebreaks }}</p>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-muted">Нет контактной информации.</p>
+    {% endfor %}
+  </div>
+{% endblock %}

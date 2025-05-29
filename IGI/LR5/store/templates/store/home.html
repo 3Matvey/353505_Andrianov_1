@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Главная — Zoo Shop{% endblock %}
+
+{% block content %}
+  <h1>Последняя новость</h1>
+  <div class="mb-4">
+    <strong>Ваше текущее время:</strong>
+    {{ user_time|date:"Y-m-d H:i:s" }}
+    ({{ user_time.tzinfo }})
+  </div>
+  {% if article %}
+    <div class="card mb-4">
+      {% if article.image %}
+        <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}">
+      {% endif %}
+      <div class="card-body">
+        <h5 class="card-title">{{ article.title }}</h5>
+        <p class="card-text">{{ article.content|truncatechars:300 }}</p>
+      </div>
+      <div class="card-footer text-muted">
+        Опубликовано: {{ article.published_at|date:"Y-m-d H:i" }}
+      </div>
+    </div>
+  {% else %}
+    <p class="text-muted">Новостей нет.</p>
+  {% endif %}
+{% endblock %}

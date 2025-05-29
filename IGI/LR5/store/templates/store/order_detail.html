@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Заказ #{{ sale.pk }} — Zoo Shop{% endblock %}
+{% block content %}
+  <h1>Заказ #{{ sale.pk }}</h1>
+  <p><strong>Товар:</strong> {{ sale.product.name }}</p>
+  <p><strong>Клиент:</strong> {{ sale.client.user.username }}</p>
+  <p><strong>Сотрудник:</strong> {{ sale.employee.user.username }}</p>
+  <p><strong>Количество:</strong> {{ sale.quantity }}</p>
+  <p><strong>Сумма:</strong> {{ sale.total_price }} BYN</p>
+  <p><strong>Дата:</strong> {{ sale.date|date:"Y-m-d H:i" }}</p>
+  <a href="{% url 'profile' %}" class="btn btn-secondary">← Назад в профиль</a>
+{% endblock %}

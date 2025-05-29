@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Заказ #{{ sale.pk }}{% endblock %}
+{% block content %}
+  <h1 class="mb-4">Заказ #{{ sale.pk }}</h1>
+  <dl class="row">
+    <dt class="col-sm-3">Товар</dt>
+    <dd class="col-sm-9">{{ sale.product.name }}</dd>
+
+    <dt class="col-sm-3">Артикул</dt>
+    <dd class="col-sm-9">{{ sale.product.sku }}</dd>
+
+    <dt class="col-sm-3">Количество</dt>
+    <dd class="col-sm-9">{{ sale.quantity }}</dd>
+
+    <dt class="col-sm-3">Итоговая цена</dt>
+    <dd class="col-sm-9">{{ sale.price }} BYN</dd>
+
+    <dt class="col-sm-3">Дата</dt>
+    <dd class="col-sm-9">{{ sale.date|date:"Y-m-d H:i" }}</dd>
+  </dl>
+
+  <a href="{% url 'order_list' %}" class="btn btn-secondary">← Назад</a>
+  <a href="{% url 'sale_cancel' sale.pk %}" class="btn btn-danger">Отменить заказ</a>
+{% endblock %}
