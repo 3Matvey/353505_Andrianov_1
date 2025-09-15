@@ -1,0 +1,44 @@
+# store/urls.py
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    # Главная страница
+    path('', views.home, name='home'),
+
+    # Новости компании (CRUD)
+    path('news/', views.news, name='news'),
+    path('news/add/', views.news_create, name='news-create'),
+    path('news/<int:pk>/', views.news_detail, name='news-detail'),
+    path('news/<int:pk>/edit/', views.news_update, name='news-update'),
+    path('news/<int:pk>/delete/', views.news_delete, name='news-delete'),
+
+    # Продукты
+    path('products/', views.product_list, name='product_list'),
+    path('products/<str:sku>/', views.product_detail, name='product_detail'),
+    path('products/<str:sku>/buy/', views.create_sale, name='product_buy'),
+    path('products/<str:sku>/delete/', views.product_delete, name='product_delete'),
+
+    # Заказы (продажи)
+    path('orders/', views.order_list, name='order_list'),
+    path('orders/<int:pk>/', views.sale_detail, name='sale_detail'),
+    path('orders/<int:pk>/cancel/', views.cancel_sale, name='sale_cancel'),
+
+    # Профиль пользователя
+    path('profile/', views.profile, name='profile'),
+    path('profile/edit/', views.profile_edit, name='profile_edit'),
+
+    # Панель сотрудника
+    path('employee/dashboard/', views.employee_dashboard, name='employee_dashboard'),
+    path('employee/sale/add/<str:sku>/', views.create_sale, name='employee_create_sale'),
+
+    # API обмена валют
+    path('api/exchange/', views.exchange_api, name='exchange_api'),
+
+    # Статические страницы сайта
+    path('about/', views.about, name='about'),
+    path('glossary/', views.glossary, name='glossary'),
+    path('contacts/', views.contacts, name='contacts'),
+    path('privacy/', views.privacy, name='privacy'),
+    path('vacancies/', views.vacancies, name='vacancies'),
+]

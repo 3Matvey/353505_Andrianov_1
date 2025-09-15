@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Словарь — Zoo Shop{% endblock %}
+
+{% block content %}
+  <h1>Словарь терминов и понятий</h1>
+  {% for fa in faqs %}
+    <div class="mb-4">
+      <h5>{{ fa.question }}</h5>
+      <p>{{ fa.answer|linebreaks }}</p>
+      <small class="text-muted">Добавлено: {{ fa.created_at|date:"Y-m-d" }}</small>
+    </div>
+  {% empty %}
+    <p class="text-muted">Пока нет вопросов.</p>
+  {% endfor %}
+{% endblock %}
