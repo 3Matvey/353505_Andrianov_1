@@ -3,6 +3,34 @@ from django.contrib.auth.models import User
 from .validators import validate_age_18
 
 
+class Partner(models.Model):
+    name = models.CharField("Название", max_length=200)
+    website = models.URLField("Сайт", blank=True)
+    logo = models.ImageField("Логотип", upload_to="partners/", blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Партнёр"
+        verbose_name_plural = "Партнёры"
+
+    def __str__(self):
+        return self.name
+
+
+class PromoCode(models.Model):
+    code = models.CharField("Код", max_length=50, unique=True)
+    discount = models.PositiveIntegerField("Скидка в %")
+    is_active = models.BooleanField("Активен", default=True)
+    created_at = models.DateTimeField("Создан", auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Промокод"
+        verbose_name_plural = "Промокоды"
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return self.code
+
+
 class CompanyNews(models.Model):
     title        = models.CharField("Заголовок", max_length=255)
     content      = models.TextField("Содержание")

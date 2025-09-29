@@ -17,7 +17,7 @@ from .utils import  fetch_nbrb_rates,  fetch_exchange_rates
 from zoo_shop import settings
 from store.decorators import employee_required
 from store.forms import CompanyNewsForm, ProfileForm, ReviewForm, SaleForm, SignUpForm
-from store.models import CompanyNews, Product, Category, Sale, Supplier, Client, Employee, CompanyInfo, FAQ, Contact, Vacancy
+from store.models import CompanyNews, Product, Partner, Category, Sale, Supplier, Client, Employee, CompanyInfo, FAQ, Contact, Vacancy
 
 
 def news(request):
@@ -91,9 +91,27 @@ def news_detail(request, pk):
 def home(request):
     article = CompanyNews.objects.order_by('-published_at').first()
     user_time = timezone.localtime(timezone.now())
+    # Баннеры (пути к картинкам)
+    banners = [
+        '/media/news/Снимок_экрана_1_FADhcEz.png',
+        '/media/news/Снимок_экрана_1_jFjpZxv.png',
+        '/media/news/Снимок_экрана_1_oktD0nW.png',
+    ]
+    # Краткий каталог товаров (первые 5)
+    products = Product.objects.select_related('category').all()[:5]
+    # Партнеры
+    partners = Partner.objects.all()
+    # Логотип (берем первый из CompanyInfo с заголовком "Логотип" или вручную)
+    logo_block = CompanyInfo.objects.filter(title__icontains="логотип").first()
+    logo_url = logo_block.content if logo_block else '/media/contacts/Снимок_экрана_1.png'
+
     return render(request, 'store/home.html', {
         'article': article,
-        'user_time': user_time,   
+        'user_time': user_time,
+        'banners': banners,
+        'products': products,
+        'partners': partners,
+        'logo_url': logo_url,
     })
 
 def about(request):
@@ -268,10 +286,7 @@ def cancel_sale(request, pk):
 @login_required
 def profile(request):
     client = request.user.client_profile
-    orders = (Sale.objects
-              .filter(client=client)
-              .select_related("product")
-              .order_by("-date"))
+    orders = Sale.objects.filter(client=client).select_related("product").order_by("-date")
     return render(request, "store/profile.html", {
         "client": client,
         "sales":  orders,
@@ -381,3 +396,72 @@ def exchange_api(request):
         "base": "BYN",
         "rates": rates
     })
+
+
+from django.views.decorators.http import require_POST
+from .models import Product
+
+def cart_view(request):
+    cart = request.session.get('cart', {})
+    products = Product.objects.filter(sku__in=cart.keys())
+    cart_items = []
+    for product in products:
+        quantity = cart[str(product.sku)]
+        cart_items.append({
+            'product': product,
+            'quantity': quantity,
+            'total': product.price * quantity
+        })
+    total_price = sum(item['total'] for item in cart_items)
+    return render(request, 'store/cart.html', {
+        'cart_items': cart_items,
+        'total_price': total_price
+    })
+
+@require_POST
+def cart_add(request, sku):
+    cart = request.session.get('cart', {})
+    cart[sku] = cart.get(sku, 0) + 1
+    request.session['cart'] = cart
+    return redirect('cart')
+
+@require_POST
+def cart_remove(request, sku):
+    cart = request.session.get('cart', {})
+    if sku in cart:
+        del cart[sku]
+    request.session['cart'] = cart
+    return redirect('cart')
+
+@require_POST
+def cart_update(request, sku):
+    quantity = int(request.POST.get('quantity', 1))
+    cart = request.session.get('cart', {})
+    if quantity > 0:
+        cart[sku] = quantity
+    else:
+        cart.pop(sku, None)
+    request.session['cart'] = cart
+    return redirect('cart')
+
+from django.contrib.auth.decorators import login_required
+from .models import Product, Sale
+
+@login_required
+def cart_checkout(request):
+    cart = request.session.get('cart', {})
+    if not cart:
+        messages.error(request, "Корзина пуста.")
+        return redirect('cart')
+    client = request.user.client_profile
+    for sku, quantity in cart.items():
+        product = Product.objects.get(sku=sku)
+        Sale.objects.create(
+            product=product,
+            client=client,
+            quantity=quantity,
+            price=product.price * quantity
+        )
+    request.session['cart'] = {}  # очистить корзину
+    messages.success(request, "Заказ успешно оформлен!")
+    return redirect('profile')

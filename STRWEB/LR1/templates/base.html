@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -11,11 +12,13 @@
 </head>
 <body class="bg-light">
 
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4" itemscope itemtype="https://schema.org/SiteNavigationElement">
     <div class="container">
 
       <!-- Бренд -->
-      <a class="navbar-brand" href="{% url 'product_list' %}">Zoo Shop</a>
+      <span itemscope itemtype="https://schema.org/Organization">
+        <a class="navbar-brand" href="{% url 'product_list' %}" itemprop="url"><span itemprop="name">Zoo Shop</span></a>
+      </span>
 
       <!-- Бургер для мобильных -->
       <button
@@ -35,43 +38,44 @@
 
           <!-- Каталог доступен всем -->
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'product_list' %}">Каталог</a>
+            <a class="nav-link" href="{% url 'product_list' %}" itemprop="url"><span itemprop="name">Каталог</span></a>
           </li>
 
           <!-- Новости доступны всем -->
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'news' %}">Новости</a>
+            <a class="nav-link" href="{% url 'news' %}" itemprop="url"><span itemprop="name">Новости</span></a>
           </li>
 
           {% if user.is_superuser %}
             <!-- Админ-панель только для суперпользователя -->
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'admin:index' %}">Админ-панель</a>
+              <a class="nav-link" href="{% url 'admin:index' %}" itemprop="url"><span itemprop="name">Админ-панель</span></a>
             </li>
           {% endif %}
 
           {% if user.is_authenticated and not user.is_superuser %}
             <!-- Личный кабинет для аутентифицированных (клиенты и сотрудники) -->
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'profile' %}">Личный кабинет</a>
+              <a class="nav-link" href="{% url 'profile' %}" itemprop="url"><span itemprop="name">Личный кабинет</span></a>
             </li>
           {% endif %}
 
           {% if user.is_authenticated and user.employee_profile %}
             <!-- Дашборд сотрудника -->
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'employee_dashboard' %}">
-                Дашборд сотрудника
-              </a>
+              <a class="nav-link" href="{% url 'employee_dashboard' %}" itemprop="url"><span itemprop="name">Дашборд сотрудника</span></a>
             </li>
           {% endif %}
 
-           <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Главная</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">О компании</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'glossary' %}">Словарь</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'contacts' %}">Контакты</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'vacancies' %}">Вакансии</a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'privacy' %}">Политика конфиденциальности</a></li>
+           <li class="nav-item"><a class="nav-link" href="{% url 'home' %}" itemprop="url"><span itemprop="name">Главная</span></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'about' %}" itemprop="url"><span itemprop="name">О компании</span></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'glossary' %}" itemprop="url"><span itemprop="name">Словарь</span></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'contacts' %}" itemprop="url"><span itemprop="name">Контакты</span></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'vacancies' %}" itemprop="url"><span itemprop="name">Вакансии</span></a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'privacy' %}" itemprop="url"><span itemprop="name">Политика конфиденциальности</span></a></li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'cart' %}">Корзина</a>
+          </li>
 
 
         </ul>

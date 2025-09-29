@@ -41,4 +41,11 @@ urlpatterns = [
     path('contacts/', views.contacts, name='contacts'),
     path('privacy/', views.privacy, name='privacy'),
     path('vacancies/', views.vacancies, name='vacancies'),
+
+    # Корзина
+    path('cart/', views.cart_view, name='cart'),
+    path('cart/add/<str:sku>/', views.cart_add, name='cart_add'),
+    path('cart/remove/<str:sku>/', views.cart_remove, name='cart_remove'),
+    path('cart/update/<str:sku>/', views.cart_update, name='cart_update'),
+    path('cart/checkout/', views.cart_checkout, name='cart_checkout'),
 ]

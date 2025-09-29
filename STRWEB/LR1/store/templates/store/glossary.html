@@ -3,6 +3,30 @@
 
 {% block content %}
   <h1>Словарь терминов и понятий</h1>
+  <p class="text-muted">Наведите курсор на <abbr title="Stock Keeping Unit — складская единица">SKU</abbr>, чтобы увидеть расшифровку.</p>
+
+  <section class="mb-4" aria-label="Определения">
+    <h2 class="h4">Определения</h2>
+    <p>
+      <dfn id="def-promo">Промокод</dfn> — буквенно-цифровая последовательность для получения скидки.
+    </p>
+    <blockquote class="blockquote">
+      <p>«Скидка применяется только к товарам без уценки»</p>
+      <footer class="blockquote-footer">Правила акций Zoo Shop</footer>
+    </blockquote>
+    <p>Короткая цитата: <q cite="https://example.com/rules">Акции не суммируются</q>.</p>
+  </section>
+
+  <section class="mb-4" aria-label="Пример формата данных">
+    <h2 class="h4">Пример формата данных</h2>
+    <pre><code>{
+  "sku": "CAT-FOOD-001",
+  "name": "Cat Salmon Feed",
+  "price": 12.50,
+  "currency": "BYN"
+}</code></pre>
+  </section>
+
   {% for fa in faqs %}
     <div class="mb-4">
       <h5>{{ fa.question }}</h5>

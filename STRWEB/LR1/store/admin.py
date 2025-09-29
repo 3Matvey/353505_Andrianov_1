@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import CompanyNews, Supplier, Category, Product, Client, Employee, Sale, Review, CompanyInfo, FAQ, Contact, Vacancy
+from .models import CompanyNews, Supplier, Category, Product, Client, Employee, Sale, Review, CompanyInfo, FAQ, Contact, Vacancy, Partner, PromoCode
 
 @admin.register(CompanyNews)
 class CompanyNewsAdmin(admin.ModelAdmin):
@@ -68,3 +68,13 @@ class SaleAdmin(admin.ModelAdmin):
     list_display    = ('id', 'product', 'client', 'employee', 'date', 'quantity', 'price')
     list_filter     = ('date', 'product')
     date_hierarchy  = 'date'
+
+@admin.register(Partner)
+class PartnerAdmin(admin.ModelAdmin):
+    list_display = ("name", "website")
+
+
+@admin.register(PromoCode)
+class PromoCodeAdmin(admin.ModelAdmin):
+    list_display = ("code", "discount", "is_active")
+    list_filter  = ("is_active",)

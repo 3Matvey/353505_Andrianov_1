@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Корзина заказа — Zoo Shop{% endblock %}
+{% block content %}
+<h1>Корзина заказа</h1>
+{% if cart_items %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Товар</th>
+        <th>Количество</th>
+        <th>Цена</th>
+        <th>Сумма</th>
+        <th>Действия</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in cart_items %}
+        <tr>
+          <td>{{ item.product.name }}</td>
+          <td>
+            <form method="post" action="{% url 'cart_update' item.product.sku %}">
+              {% csrf_token %}
+              <input type="number" name="quantity" value="{{ item.quantity }}" min="1" style="width:60px;">
+              <button type="submit" class="btn btn-sm btn-outline-secondary">Изменить</button>
+            </form>
+          </td>
+          <td>{{ item.product.price }} р.</td>
+          <td>{{ item.total }} р.</td>
+          <td>
+            <form method="post" action="{% url 'cart_remove' item.product.sku %}">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
+            </form>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <h4>Итого: {{ total_price }} р.</h4>
+  <form method="post" action="{% url 'cart_checkout' %}">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-success">Оплатить</button>
+  </form>
+{% else %}
+  <p>Ваша корзина пуста.</p>
+{% endif %}
+{% endblock %}

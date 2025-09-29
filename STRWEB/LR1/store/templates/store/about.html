@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}О компании — Zoo Shop{% endblock %}
 
 {% block content %}
@@ -7,4 +8,46 @@
     <h2>{{ block.title }}</h2>
     <div>{{ block.content|linebreaks }}</div>
   {% endfor %}
+
+  <section class="mt-4" aria-label="Основание компании">
+    <h2 class="h4">Ключевые даты</h2>
+    <p>
+      Основаны: <time datetime="2015-04-15">15 апреля 2015</time>.
+      Юбилей: <time datetime="2025-04-15">15 апреля 2025</time>.
+    </p>
+  </section>
+
+  <section class="mt-4" aria-label="Четверостишие">
+    <h2 class="h4">Четверостишие о Zoo Shop</h2>
+    <p class="mb-1">Вариант с управляемыми переносами:</p>
+    <p>
+      В мир питомцев двери настежь,<br>
+      Ласка, корм и теплота;<br>
+      Каждый хвостик будет счастлив —<br>
+      Zoo Shop рядом навсегда.
+    </p>
+    <p class="mb-1">Вариант с фиксированными переносами:</p>
+    <pre>В мир питомцев двери настежь
+Ласка, корм и теплота
+Каждый хвостик будет счастлив
+Zoo Shop рядом навсегда</pre>
+  </section>
+
+  <section class="mt-4" aria-label="Медиа">
+    <h2 class="h4">Аудио и видео</h2>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <audio controls preload="none">
+          <source src="{% static 'media/sample/podcast.mp3' %}" type="audio/mpeg">
+          Ваш браузер не поддерживает аудио.
+        </audio>
+      </div>
+      <div class="col-md-6">
+        <video controls preload="none" class="w-100" poster="{% static 'media/sample/poster.jpg' %}">
+          <source src="{% static 'media/sample/demo.mp4' %}" type="video/mp4">
+          Ваш браузер не поддерживает видео.
+        </video>
+      </div>
+    </div>
+  </section>
 {% endblock %}
