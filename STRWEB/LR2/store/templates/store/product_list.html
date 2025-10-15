@@ -73,25 +73,25 @@
     </div>
   </form>
 
-  <ul class="list-group">
+  <div class="products-grid">
     {% for p in page_obj.object_list %}
-      <li class="list-group-item d-flex justify-content-between align-items-center" itemscope itemtype="https://schema.org/Product">
-        <div>
+      <article class="product-item" itemscope itemtype="https://schema.org/Product">
+        <header>
           <a href="{% url 'product_detail' p.sku %}" itemprop="url">
-            <strong itemprop="name">{{ p.name }}</strong>
+            <h3 class="heading-transform" itemprop="name">{{ p.name }}</h3>
           </a>
-          (<span itemprop="category">{{ p.category.name }}</span>)
+          <div class="small">(<span itemprop="category">{{ p.category.name }}</span>)</div>
           <meta itemprop="sku" content="{{ p.sku }}">
-        </div>
-        <div class="d-flex align-items-center" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+        </header>
+        <div class="price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
           <span class="badge bg-primary rounded-pill"><span itemprop="price">{{ p.price }}</span> <span itemprop="priceCurrency" content="BYN">р.</span></span>
           <link itemprop="availability" href="https://schema.org/InStock" />
         </div>
-      </li>
+      </article>
     {% empty %}
-      <li class="list-group-item">Товары не найдены.</li>
+      <div class="product-item">Товары не найдены.</div>
     {% endfor %}
-  </ul>
+  </div>
 
     {% if page_obj.has_other_pages %}
     <nav id="paging" class="mt-4">

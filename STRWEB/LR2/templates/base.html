@@ -8,15 +8,13 @@
   
   <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/616/616408.png" type="image/png">
   <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/616/616408.png" type="image/png">
-
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  >
+  
+  <!-- Project CSS -->
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
-<body class="bg-light">
+<body>
 
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4" itemscope itemtype="https://schema.org/SiteNavigationElement">
+  <nav class="site-nav" itemscope itemtype="https://schema.org/SiteNavigationElement">
     <div class="container">
 
       <!-- Бренд -->
@@ -25,86 +23,74 @@
       </span>
 
       <!-- Бургер для мобильных -->
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#main-nav"
-        aria-controls="main-nav"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="main-nav">
-        <ul class="navbar-nav me-auto">
+      <div id="main-nav" class="nav-links">
+        <ul class="nav-left">
 
           <!-- Каталог доступен всем -->
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'product_list' %}" itemprop="url"><span itemprop="name">Каталог</span></a>
+          <li>
+            <a href="{% url 'product_list' %}" itemprop="url"><span itemprop="name">Каталог</span></a>
           </li>
 
           <!-- Новости доступны всем -->
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'news' %}" itemprop="url"><span itemprop="name">Новости</span></a>
+          <li>
+            <a href="{% url 'news' %}" itemprop="url"><span itemprop="name">Новости</span></a>
           </li>
 
           {% if user.is_superuser %}
             <!-- Админ-панель только для суперпользователя -->
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'admin:index' %}" itemprop="url"><span itemprop="name">Админ-панель</span></a>
+            <li>
+              <a href="{% url 'admin:index' %}" itemprop="url"><span itemprop="name">Админ-панель</span></a>
             </li>
           {% endif %}
 
           {% if user.is_authenticated and not user.is_superuser %}
             <!-- Личный кабинет для аутентифицированных (клиенты и сотрудники) -->
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'profile' %}" itemprop="url"><span itemprop="name">Личный кабинет</span></a>
+            <li>
+              <a href="{% url 'profile' %}" itemprop="url"><span itemprop="name">Личный кабинет</span></a>
             </li>
           {% endif %}
 
           {% if user.is_authenticated and user.employee_profile %}
             <!-- Дашборд сотрудника -->
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'employee_dashboard' %}" itemprop="url"><span itemprop="name">Дашборд сотрудника</span></a>
+            <li>
+              <a href="{% url 'employee_dashboard' %}" itemprop="url"><span itemprop="name">Дашборд сотрудника</span></a>
             </li>
           {% endif %}
 
-           <li class="nav-item"><a class="nav-link" href="{% url 'home' %}" itemprop="url"><span itemprop="name">Главная</span></a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'about' %}" itemprop="url"><span itemprop="name">О компании</span></a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'glossary' %}" itemprop="url"><span itemprop="name">Словарь</span></a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'contacts' %}" itemprop="url"><span itemprop="name">Контакты</span></a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'vacancies' %}" itemprop="url"><span itemprop="name">Вакансии</span></a></li>
-          <li class="nav-item"><a class="nav-link" href="{% url 'privacy' %}" itemprop="url"><span itemprop="name">Политика конфиденциальности</span></a></li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'cart' %}">Корзина</a>
+           <li><a href="{% url 'home' %}" itemprop="url"><span itemprop="name">Главная</span></a></li>
+          <li><a href="{% url 'about' %}" itemprop="url"><span itemprop="name">О компании</span></a></li>
+          <li><a href="{% url 'glossary' %}" itemprop="url"><span itemprop="name">Словарь</span></a></li>
+          <li><a href="{% url 'contacts' %}" itemprop="url"><span itemprop="name">Контакты</span></a></li>
+          <li><a href="{% url 'vacancies' %}" itemprop="url"><span itemprop="name">Вакансии</span></a></li>
+          <li><a href="{% url 'privacy' %}" itemprop="url"><span itemprop="name">Политика конфиденциальности</span></a></li>
+          <li>
+            <a href="{% url 'cart' %}">Корзина</a>
           </li>
 
 
         </ul>
 
-        <ul class="navbar-nav">
+        <ul class="nav-right">
           {% if user.is_authenticated %}
-            <li class="nav-item">
-              <span class="navbar-text me-3">
+            <li>
+              <span class="nav-hello">
                 Привет, {{ user.get_username }}
               </span>
             </li>
-            <li class="nav-item">
+            <li>
               <form method="post" action="{% url 'logout' %}">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-link nav-link p-0">
+                <button type="submit" class="linklike">
                   Выйти
                 </button>
               </form>
             </li>
           {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'login' %}">Войти</a>
+            <li>
+              <a href="{% url 'login' %}">Войти</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'signup' %}">Регистрация</a>
+            <li>
+              <a href="{% url 'signup' %}">Регистрация</a>
             </li>
           {% endif %}
         </ul>
@@ -116,12 +102,9 @@
     {% block content %}{% endblock %}
   </main>
 
-  <footer class="text-center py-3 mt-4">
+  <footer class="site-footer">
     &copy; {% now "Y" %} Zoo Shop
   </footer>
 
-  <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-  ></script>
 </body>
 </html>
