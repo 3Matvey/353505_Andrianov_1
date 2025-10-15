@@ -6,27 +6,27 @@
   <table class="table">
     <thead>
       <tr>
-        <th>Товар</th>
-        <th>Количество</th>
-        <th>Цена</th>
-        <th>Сумма</th>
-        <th>Действия</th>
+        <th id="h-product" scope="col">Товар</th>
+        <th id="h-quantity" scope="col">Количество</th>
+        <th id="h-price" scope="col">Цена</th>
+        <th id="h-total" scope="col">Сумма</th>
+        <th id="h-actions" scope="col">Действия</th>
       </tr>
     </thead>
     <tbody>
       {% for item in cart_items %}
         <tr>
-          <td>{{ item.product.name }}</td>
-          <td>
+          <td headers="h-product">{{ item.product.name }}</td>
+          <td headers="h-quantity">
             <form method="post" action="{% url 'cart_update' item.product.sku %}">
               {% csrf_token %}
               <input type="number" name="quantity" value="{{ item.quantity }}" min="1" style="width:60px;">
               <button type="submit" class="btn btn-sm btn-outline-secondary">Изменить</button>
             </form>
           </td>
-          <td>{{ item.product.price }} р.</td>
-          <td>{{ item.total }} р.</td>
-          <td>
+          <td headers="h-price">{{ item.product.price }} р.</td>
+          <td headers="h-total">{{ item.total }} р.</td>
+          <td headers="h-actions">
             <form method="post" action="{% url 'cart_remove' item.product.sku %}">
               {% csrf_token %}
               <button type="submit" class="btn btn-sm btn-danger">Удалить</button>

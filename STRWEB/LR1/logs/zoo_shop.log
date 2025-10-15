@@ -2222,3 +2222,9 @@ Traceback (most recent call last):
     )
 ValueError: The view store.views.news_detail didn't return an HttpResponse object. It returned None instead.
 [WARNING] 2025-09-17 19:55:23,712 django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2025-09-29 12:13:26,263 django.request Not Found: /favicon.ico
+[WARNING] 2025-10-01 17:41:05,133 django.request Not Found: /media/news/Снимок_экрана_1_YHKmJ6p.webp
+[WARNING] 2025-10-01 17:41:05,134 django.request Not Found: /media/news/Снимок_экрана_2024-05-17_150737.webp
+[WARNING] 2025-10-01 17:41:05,145 django.request Not Found: /media/news/Снимок_экрана_1_FADhcEz.webp
+[WARNING] 2025-10-01 17:41:05,152 django.request Not Found: /media/news/Снимок_экрана_1_oktD0nW.webp
+[WARNING] 2025-10-01 17:41:05,162 django.request Not Found: /media/news/Снимок_экрана_2024-06-04_150343.webp
