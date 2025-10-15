@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Контакты — Zoo Shop{% endblock %}
+
+{% block content %}
+<h1>Контакты</h1>
+<nav class="mb-3" aria-label="Навигация по контактной странице">
+  <ul class="nav nav-tabs">
+    <li class="nav-item"><a class="nav-link" href="#team">Команда</a></li>
+    <li class="nav-item"><a class="nav-link" href="#map">Карта</a></li>
+    <li class="nav-item"><a class="nav-link" href="#feedback">Обратная связь</a></li>
+  </ul>
+</nav>
+<div id="team" class="row">
+  {% for p in people %}
+  <div class="col-md-4 mb-3">
+    <div class="card h-100">
+      {% if p.photo %}
+      <img src="{{ p.photo.url }}" class="card-img-top" alt="{{ p.name }}">
+      {% endif %}
+      <div class="card-body">
+        <h5>{{ p.name }}</h5>
+        <p><em>{{ p.role }}</em></p>
+        <p>📞 {{ p.phone }}<br>✉️ {{ p.email }}</p>
+        <p>{{ p.description|linebreaks }}</p>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <p class="text-muted">Нет контактной информации.</p>
+  {% endfor %}
+</div>
+
+<section id="map" class="my-4" aria-label="Карта расположения">
+  <h2>Мы на карте</h2>
+  <div class="ratio ratio-16x9 border rounded overflow-hidden">
+    <iframe
+      src="https://www.openstreetmap.org/export/embed.html?bbox=27.5300%2C53.8900%2C27.5800%2C53.9200&amp;layer=mapnik"
+      title="Карта расположения Zoo Shop" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+  </div>
+  <p class="mt-2">
+    <a href="https://www.openstreetmap.org" target="_blank" rel="noopener">Открыть карту в новой вкладке</a>
+  </p>
+</section>
+
+<section id="feedback" class="my-4" aria-label="Форма обратной связи">
+  <h2>Напишите нам</h2>
+  <form method="post" action="" class="row g-3">
+    {% csrf_token %}
+    <fieldset class="col-12">
+      <legend class="h5">Контактные данные</legend>
+      <div class="col-md-6">
+        <label for="fbName" class="form-label">Имя</label>
+        <input id="fbName" name="name" type="text" class="form-control" required minlength="2" maxlength="100"
+          placeholder="Ваше имя">
+        <div class="invalid-feedback">Укажите имя (от 2 символов).</div>
+      </div>
+      <div class="col-md-6">
+        <label for="fbEmail" class="form-label">Email</label>
+        <input id="fbEmail" name="email" type="email" class="form-control" required placeholder="name@example.com">
+        <div class="invalid-feedback">Укажите корректный email.</div>
+      </div>
+      <div class="col-md-6">
+        <label for="fbPhone" class="form-label">Телефон</label>
+        <input id="fbPhone" name="phone" type="tel" class="form-control" pattern="^\+?[0-9\-\s]{7,20}$"
+          placeholder="+375 29 123-45-67">
+        <div class="invalid-feedback">Допустимы цифры, пробелы, тире, начиная с + (необязательно).</div>
+      </div>
+    </fieldset>
+    <fieldset class="col-12">
+      <legend class="h5">Сообщение</legend>
+      <div class="col-12">
+        <label for="fbMessage" class="form-label">Сообщение</label>
+        <textarea id="fbMessage" name="message" class="form-control" rows="5" required minlength="10" maxlength="1000"
+          placeholder="Как мы можем помочь?"></textarea>
+        <div class="invalid-feedback">Сообщение должно содержать не менее 10 символов.</div>
+      </div>
+    </fieldset>
+    <div class="col-12">
+      <button class="btn btn-primary" type="submit">Отправить</button>
+    </div>
+  </form>
+</section>
+{% endblock %}

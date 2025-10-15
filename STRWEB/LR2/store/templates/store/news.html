@@ -1,0 +1,105 @@
+{# templates/store/news.html #}
+{% extends "base.html" %}
+
+{% block title %}Новости компании и курсы валют{% endblock %}
+
+{% block content %}
+  <div class="container mt-4">
+    <nav class="mb-3" aria-label="Навигация по странице новостей">
+      <ul class="nav nav-pills">
+        <li class="nav-item"><a class="nav-link" href="#rates">Курсы</a></li>
+        <li class="nav-item"><a class="nav-link" href="#news">Новости</a></li>
+        <li class="nav-item"><a class="nav-link" href="#top">Вверх</a></li>
+      </ul>
+    </nav>
+
+    {# Блок с курсами валют #}
+    <div id="rates" class="d-flex justify-content-between align-items-center mb-4">
+      <h1>Курсы валют к BYN</h1>
+      {% if user.is_superuser or user.employee_profile %}
+        <a href="{% url 'news-create' %}" class="btn btn-primary">Добавить новость</a>
+      {% endif %}
+    </div>
+
+    {% if rates %}
+      <div class="row mb-5">
+        {% for cur, val in rates.items %}
+          <div class="col-sm-6 col-md-4 col-lg-3 mb-3">
+            <div class="card text-center">
+              <div class="card-body">
+                <h5 class="card-title">1 {{ cur }}</h5>
+                <p class="card-text display-6">{{ val }}</p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-muted">Не удалось получить курсы валют.</p>
+    {% endif %}
+
+    {# Блок с новостями #}
+    <h2 id="news" class="mb-3">Новости компании</h2>
+
+    {% if page_obj.object_list %}
+      <div class="row">
+        {% for item in page_obj.object_list %}
+          <div class="col-md-6 mb-4">
+            <div class="card h-100 position-relative">
+              {% if item.image %}
+                <img src="{{ item.image.url }}" class="card-img-top" alt="{{ item.title }}">
+              {% endif %}
+              <div class="card-body">
+                <h5 class="card-title">
+                  <a href="{% url 'news-detail' item.pk %}" class="text-decoration-none text-dark">
+                    {{ item.title }}
+                  </a>
+                </h5>
+                <p class="card-text">{{ item.content|truncatechars:200 }}</p>
+              </div>
+              <div class="card-footer text-muted small">
+                Опубликовано: <time datetime="{{ item.published_at|date:'c' }}">{{ item.published_at|date:"Y-m-d H:i" }}</time>
+              </div>
+
+              {% if user.is_superuser or user.employee_profile %}
+                <div class="position-absolute top-0 end-0 p-2 d-flex">
+                  <a href="{% url 'news-update' item.pk %}" class="btn btn-sm btn-outline-secondary me-1" title="Редактировать">✎</a>
+                  <a href="{% url 'news-delete' item.pk %}" class="btn btn-sm btn-outline-danger" title="Удалить">🗑</a>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      {# Пагинация #}
+      {% if page_obj.has_other_pages %}
+        <nav aria-label="Пагинация новостей">
+          <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">← Предыдущая</a>
+              </li>
+            {% else %}
+              <li class="page-item disabled"><span class="page-link">← Предыдущая</span></li>
+            {% endif %}
+            <li class="page-item disabled">
+              <span class="page-link">Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+            </li>
+            {% if page_obj.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Следующая →</a>
+              </li>
+            {% else %}
+              <li class="page-item disabled"><span class="page-link">Следующая →</span></li>
+            {% endif %}
+          </ul>
+        </nav>
+      {% endif %}
+
+    {% else %}
+      <p class="text-muted">Новостей нет.</p>
+    {% endif %}
+
+  </div>
+{% endblock %}
