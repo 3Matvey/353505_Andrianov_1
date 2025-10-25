@@ -1,0 +1,32 @@
+/* Forms states */
+input:required, select:required, textarea:required { outline: 1px dashed #f59e0b; }
+input:optional, select:optional, textarea:optional { outline: 1px dashed #64748b; }
+input:disabled, select:disabled, textarea:disabled { background: #1f2a37; color: #94a3b8; }
+input:out-of-range, select:out-of-range, textarea:out-of-range { border-color: #ef4444; }
+input[type="checkbox"]:checked + label, input[type="radio"]:checked + label { color: var(--color-accent); }
+
+/* Lightweight controls */
+.form-label { display: block; margin-bottom: 0.25rem; }
+.form-control, .form-select { background: #0f1b28; color: var(--color-text); border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; padding: 0.5rem 0.6rem; min-width: 200px; }
+
+/* Catalog filters - horizontal layout */
+.row { display: flex; flex-wrap: wrap; gap: 1rem; align-items: end; }
+.col-auto { display: flex; flex-direction: column; min-width: 150px; }
+.col-auto label { margin-bottom: 0.25rem; }
+.col-auto input, .col-auto select { min-width: 120px; }
+
+/* Buttons */
+.btn { cursor: pointer; border: 0; padding: 0.55rem 0.9rem; border-radius: 10px; font-weight: 600; display: inline-block; text-align: center; }
+.btn-sm { padding: 0.35rem 0.6rem; font-size: 0.875rem; }
+.btn-primary { background: var(--color-accent); color: #0a0f14; }
+.btn-info { background: #38bdf8; color: #0a0f14; }
+.btn-outline-secondary { background: transparent; color: var(--color-text); border: 1px solid rgba(255,255,255,0.35); }
+.btn-outline-danger { background: transparent; color: #fca5a5; border: 1px solid #ef4444; }
+.btn:hover { filter: brightness(1.06); }
+
+/* Pagination */
+.pagination { list-style: none; display: flex; align-items: center; gap: 0.5rem; padding: 0; margin: 0; }
+.page-item.disabled .page-link { opacity: 0.5; pointer-events: none; }
+.page-item.active .page-link { background: var(--color-accent); color: #0a0f14; }
+.page-link { display: inline-block; padding: 0.45rem 0.75rem; border-radius: 10px; background: rgba(255,255,255,0.06); color: var(--color-text); text-decoration: none; }
+.page-link:hover { background: rgba(255,255,255,0.1); }

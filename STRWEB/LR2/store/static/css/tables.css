@@ -1,0 +1,11 @@
+/* Tables */
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; }
+th, td { padding: 0.6rem 0.75rem; vertical-align: middle; }
+tr + tr { border-top: 1px solid rgba(255,255,255,0.06); }
+td:empty { background: rgba(167,139,250,0.08); }
+caption { caption-side: top; text-align: left; padding: 0.5rem 0; font-weight: 600; }
+
+tbody tr:nth-child(odd) { background: rgba(255,255,255,0.02); }
+tbody tr:first-child td { border-top-left-radius: 8px; border-top-right-radius: 8px; }
+tbody tr:last-child td { border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; }

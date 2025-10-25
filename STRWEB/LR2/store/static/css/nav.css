@@ -1,0 +1,39 @@
+/* Navigation */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: linear-gradient(180deg, rgba(20,38,56,0.95), rgba(20,38,56,0.85));
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.site-nav .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 0.5rem;
+}
+
+.navbar-brand { font-family: "Merriweather", Georgia, serif; letter-spacing: 0.06em; font-variant-ligatures: common-ligatures; }
+
+#main-nav.nav-links { display: flex; align-items: center; gap: 1rem; }
+
+.nav-left, .nav-right { display: flex; align-items: center; gap: 0.75rem; list-style: none; padding: 0; margin: 0; }
+
+.nav-left a, .nav-right a, .linklike { display: inline-block; padding: 0.5rem 0.75rem; border-radius: 8px; color: var(--color-text); }
+
+.nav-left a:hover, .nav-right a:hover, .linklike:hover { background: rgba(255,255,255,0.06); }
+
+/* Fix logout button styling */
+.linklike { background: none; border: none; color: var(--color-text); cursor: pointer; font-size: inherit; }
+.linklike:hover { background: rgba(255,255,255,0.06); text-decoration: none; }
+
+@media (max-width: 900px) {
+  #main-nav.nav-links { flex-direction: column; align-items: stretch; }
+  .nav-left, .nav-right { flex-wrap: wrap; }
+}
+
+@media (max-height: 600px) {
+  .site-nav .container { padding: 0.4rem 0.5rem; }
+}

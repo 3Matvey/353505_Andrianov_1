@@ -9,8 +9,16 @@
   <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/616/616408.png" type="image/png">
   <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/616/616408.png" type="image/png">
   
-  <!-- Project CSS -->
-  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+  <!-- Project CSS (modular) -->
+  <link rel="stylesheet" href="{% static 'css/core.css' %}">
+  <link rel="stylesheet" href="{% static 'css/nav.css' %}">
+  <link rel="stylesheet" href="{% static 'css/tables.css' %}">
+  <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components.css' %}">
+  {% if request.resolver_match.url_name == 'home' %}
+  <link rel="stylesheet" href="{% static 'css/preloader.css' %}">
+  <link rel="stylesheet" href="{% static 'css/animations.css' %}">
+  {% endif %}
 </head>
 <body>
 
@@ -98,6 +106,13 @@
     </div>
   </nav>
 
+  {% if request.resolver_match.url_name == 'home' %}
+  <!-- Preloader (only on home page) -->
+  <div class="preloader" id="preloader">
+    <div class="spinner"></div>
+  </div>
+  {% endif %}
+
   <main class="container">
     {% block content %}{% endblock %}
   </main>
@@ -105,6 +120,23 @@
   <footer class="site-footer">
     &copy; {% now "Y" %} Zoo Shop
   </footer>
+
+  {% if request.resolver_match.url_name == 'home' %}
+  <script>
+    // Hide preloader when page loads (only on home page)
+    window.addEventListener('load', function() {
+      const preloader = document.getElementById('preloader');
+      if (preloader) {
+        setTimeout(() => {
+          preloader.classList.add('hidden');
+          setTimeout(() => {
+            preloader.style.display = 'none';
+          }, 500);
+        }, 2000); // Show preloader for 2 seconds to see animation
+      }
+    });
+  </script>
+  {% endif %}
 
 </body>
 </html>
