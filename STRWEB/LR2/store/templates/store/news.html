@@ -55,7 +55,8 @@
                     {{ item.title }}
                   </a>
                 </h5>
-                <p class="card-text">{{ item.content|truncatechars:200 }}</p>
+                <p class="card-text news-teaser">{{ item.content|truncatechars:200 }}</p>
+                <a href="{% url 'news-detail' item.pk %}" class="btn btn-sm btn-info">Читать далее</a>
               </div>
               <div class="card-footer text-muted small">
                 Опубликовано: <time datetime="{{ item.published_at|date:'c' }}">{{ item.published_at|date:"Y-m-d H:i" }}</time>

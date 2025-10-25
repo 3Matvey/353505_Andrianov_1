@@ -19,6 +19,12 @@
   <link rel="stylesheet" href="{% static 'css/preloader.css' %}">
   <link rel="stylesheet" href="{% static 'css/animations.css' %}">
   {% endif %}
+  {% if 'reviews' in request.resolver_match.url_name %}
+  <link rel="stylesheet" href="{% static 'css/reviews.css' %}">
+  {% endif %}
+  {% if 'promocodes' in request.resolver_match.url_name %}
+  <link rel="stylesheet" href="{% static 'css/promocodes.css' %}">
+  {% endif %}
 </head>
 <body>
 
@@ -70,6 +76,7 @@
           <li><a href="{% url 'glossary' %}" itemprop="url"><span itemprop="name">Словарь</span></a></li>
           <li><a href="{% url 'contacts' %}" itemprop="url"><span itemprop="name">Контакты</span></a></li>
           <li><a href="{% url 'vacancies' %}" itemprop="url"><span itemprop="name">Вакансии</span></a></li>
+          <li><a href="{% url 'promocodes' %}" itemprop="url"><span itemprop="name">Промокоды</span></a></li>
           <li><a href="{% url 'privacy' %}" itemprop="url"><span itemprop="name">Политика конфиденциальности</span></a></li>
           <li>
             <a href="{% url 'cart' %}">Корзина</a>

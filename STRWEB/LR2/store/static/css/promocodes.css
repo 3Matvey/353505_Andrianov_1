@@ -1,0 +1,153 @@
+/* Promocodes and coupons styling */
+.promocodes-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.promocodes-section {
+  margin: 2rem 0;
+}
+
+.promocodes-section h2 {
+  color: var(--color-accent);
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  border-bottom: 2px solid var(--color-accent);
+  padding-bottom: 0.5rem;
+}
+
+/* Active promocodes */
+.active-promocodes {
+  background: linear-gradient(135deg, rgba(45,212,191,0.1), rgba(167,139,250,0.1));
+  border: 1px solid var(--color-accent);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Archived promocodes */
+.archived-promocodes {
+  background: var(--color-surface);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+/* Promocode cards */
+.promocode-card {
+  background: var(--color-surface);
+  border-radius: 10px;
+  padding: 1rem;
+  margin: 0.75rem 0;
+  border: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.promocode-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.promocode-info {
+  flex: 1;
+}
+
+.promocode-code {
+  font-family: "Courier New", monospace;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: var(--color-accent);
+  background: rgba(45,212,191,0.1);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+.promocode-description {
+  color: var(--color-text);
+  margin: 0.5rem 0;
+}
+
+.promocode-discount {
+  font-weight: 600;
+  color: var(--color-accent-2);
+  font-size: 1.1rem;
+}
+
+.promocode-status {
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.status-active {
+  background: rgba(34,197,94,0.2);
+  color: #22c55e;
+}
+
+.status-expired {
+  background: rgba(239,68,68,0.2);
+  color: #ef4444;
+}
+
+.status-archived {
+  background: rgba(156,163,175,0.2);
+  color: #9ca3af;
+}
+
+/* Lists styling */
+.promocodes-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.promocodes-list li {
+  margin: 0.5rem 0;
+  padding: 0.75rem;
+  background: rgba(255,255,255,0.02);
+  border-radius: 8px;
+  border-left: 3px solid var(--color-accent);
+}
+
+.promocodes-list li:nth-child(even) {
+  background: rgba(255,255,255,0.05);
+}
+
+/* Archive section styling */
+.archive-section {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.archive-toggle {
+  background: none;
+  border: 1px solid var(--color-muted);
+  color: var(--color-muted);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.archive-toggle:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.archive-content {
+  display: none;
+  margin-top: 1rem;
+}
+
+.archive-content.show {
+  display: block;
+}

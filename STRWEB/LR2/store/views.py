@@ -86,6 +86,9 @@ def news_delete(request, pk):
 @login_required
 def news_detail(request, pk):
     news_item = get_object_or_404(CompanyNews, pk=pk)
+    return render(request, 'store/news_detail.html', {
+        'news_item': news_item
+    })
 
 
 def home(request):
@@ -139,6 +142,15 @@ def vacancies(request):
     vacs = Vacancy.objects.all()
     return render(request, 'store/vacancies.html', {
         'vacancies': vacs
+    })
+
+def promocodes(request):
+    from .models import PromoCode
+    active_promocodes = PromoCode.objects.filter(is_active=True)
+    archived_promocodes = PromoCode.objects.filter(is_active=False)
+    return render(request, 'store/promocodes.html', {
+        'active_promocodes': active_promocodes,
+        'archived_promocodes': archived_promocodes
     })
 
 

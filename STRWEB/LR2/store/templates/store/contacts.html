@@ -10,19 +10,19 @@
     <li class="nav-item"><a class="nav-link" href="#feedback">Обратная связь</a></li>
   </ul>
 </nav>
-<div id="team" class="row">
+<div id="team" class="contacts-grid">
   {% for p in people %}
-  <div class="col-md-4 mb-3">
-    <div class="card h-100">
-      {% if p.photo %}
-      <img src="{{ p.photo.url }}" class="card-img-top" alt="{{ p.name }}">
-      {% endif %}
-      <div class="card-body">
-        <h5>{{ p.name }}</h5>
-        <p><em>{{ p.role }}</em></p>
-        <p>📞 {{ p.phone }}<br>✉️ {{ p.email }}</p>
-        <p>{{ p.description|linebreaks }}</p>
-      </div>
+  <div class="contact-card">
+    {% if p.photo %}
+    <img src="{{ p.photo.url }}" alt="{{ p.name }}">
+    {% else %}
+    <div class="contact-placeholder">👤</div>
+    {% endif %}
+    <div class="contact-info">
+      <h5>{{ p.name }}</h5>
+      <p class="role"><em>{{ p.role }}</em></p>
+      <p class="contact-details">📞 {{ p.phone }}<br>✉️ {{ p.email }}</p>
+      <p class="description">{{ p.description|linebreaks }}</p>
     </div>
   </div>
   {% empty %}

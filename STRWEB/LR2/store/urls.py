@@ -41,6 +41,7 @@ urlpatterns = [
     path('contacts/', views.contacts, name='contacts'),
     path('privacy/', views.privacy, name='privacy'),
     path('vacancies/', views.vacancies, name='vacancies'),
+    path('promocodes/', views.promocodes, name='promocodes'),
 
     # Корзина
     path('cart/', views.cart_view, name='cart'),

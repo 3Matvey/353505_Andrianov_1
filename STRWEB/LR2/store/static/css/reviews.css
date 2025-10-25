@@ -1,0 +1,117 @@
+/* Reviews form with font keywords for components */
+.reviews-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: var(--color-surface);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.reviews-form h2 {
+  color: var(--color-accent);
+  text-align: center;
+  margin-bottom: 2rem;
+  font-family: "Merriweather", serif;
+  font-weight: 700;
+}
+
+/* Form components with font keywords */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* Input fields with different font styles */
+input[type="text"], 
+input[type="email"], 
+input[type="number"] {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+input[type="number"] {
+  font-variant-numeric: tabular-nums;
+}
+
+textarea {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+select {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+}
+
+/* Button with specific font */
+.review-submit {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Rating stars */
+.rating-stars {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.rating-stars input[type="radio"] {
+  display: none;
+}
+
+.rating-stars label {
+  font-size: 2rem;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.rating-stars label:hover,
+.rating-stars input:checked ~ label {
+  color: #ffd700;
+}
+
+/* Review cards display */
+.review-card {
+  background: var(--color-surface);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  border-left: 4px solid var(--color-accent);
+}
+
+.review-author {
+  font-weight: 600;
+  color: var(--color-accent);
+  margin-bottom: 0.5rem;
+}
+
+.review-rating {
+  color: #ffd700;
+  margin-bottom: 1rem;
+}
+
+.review-text {
+  font-style: italic;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.review-date {
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
