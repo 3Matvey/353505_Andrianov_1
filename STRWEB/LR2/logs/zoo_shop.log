@@ -2368,3 +2368,4 @@ Traceback (most recent call last):
 ValueError: The view store.views.news_detail didn't return an HttpResponse object. It returned None instead.
 [WARNING] 2025-10-25 10:01:41,468 django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
 [WARNING] 2025-10-25 10:02:30,862 django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2025-10-25 10:43:46,368 django.request Not Found: /favicon.ico
