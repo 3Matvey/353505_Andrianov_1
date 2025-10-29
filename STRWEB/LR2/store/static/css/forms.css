@@ -1,40 +1,132 @@
-/* БАЗА форм — оставь свои правила, если были, это безопасные дополнения */
-input:required, select:required, textarea:required { outline: 1px dashed #f59e0b; }
-input:optional, select:optional, textarea:optional { outline: 1px dashed #64748b; }
-input:disabled, select:disabled, textarea:disabled { background: #1f2a37; color: #94a3b8; }
-input:out-of-range, select:out-of-range, textarea:out-of-range { border-color: #ef4444; }
-input[type="checkbox"]:checked + label, input[type="radio"]:checked + label { color: var(--color-accent); }
+/* Form controls and interactive elements */
 
-/* ПЛЕЙСХОЛДЕР — требование ТЗ */
-input::placeholder, textarea::placeholder {
+/* Field state indicators */
+input:required,
+select:required,
+textarea:required {
+  outline: 1px dashed #f59e0b;
+}
+
+input:optional,
+select:optional,
+textarea:optional {
+  outline: 1px dashed #64748b;
+}
+
+input:disabled,
+select:disabled,
+textarea:disabled {
+  background: #1f2a37;
+  color: #94a3b8;
+}
+
+input:out-of-range,
+select:out-of-range,
+textarea:out-of-range {
+  border-color: #ef4444;
+}
+
+input[type="checkbox"]:checked + label,
+input[type="radio"]:checked + label {
+  color: var(--color-accent);
+}
+
+/* Placeholder styling */
+input::placeholder,
+textarea::placeholder {
   color: #94a3b8;
   font-style: italic;
   opacity: 0.85;
 }
 
-/* Диапазоны — требование ТЗ */
+/* Range inputs */
 input[type="number"]:in-range {
   border-color: #22c55e;
-  box-shadow: 0 0 0 2px rgba(34,197,94,0.25);
+  box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.25);
 }
+
 input[type="number"]:out-of-range {
   border-color: #ef4444;
-  box-shadow: 0 0 0 2px rgba(239,68,68,0.2);
+  box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
 }
 
-/* Контролы */
-.form-label { display: block; margin-bottom: 0.25rem; }
-.form-control, .form-select {
-  background: #0f1b28; color: var(--color-text);
-  border: 1px solid rgba(255,255,255,0.2);
-  border-radius: 10px; padding: 0.5rem 0.6rem; min-width: 200px;
+/* Layout helpers */
+.form-label {
+  display: block;
+  margin-bottom: 0.25rem;
 }
 
-/* Кнопки */
-.btn { cursor: pointer; border: 0; padding: 0.55rem 0.9rem; border-radius: 10px; font-weight: 600; display: inline-block; text-align: center; }
-.btn-sm { padding: 0.35rem 0.6rem; font-size: 0.875rem; }
-.btn-primary { background: var(--color-accent); color: #0a0f14; }
-.btn-info { background: #38bdf8; color: #0a0f14; }
-.btn-outline-secondary { background: transparent; color: var(--color-text); border: 1px solid rgba(255,255,255,0.35); }
-.btn-outline-danger { background: transparent; color: #fca5a5; border: 1px solid #ef4444; }
-.btn:hover { filter: brightness(1.06); }
+.form-control,
+.form-select {
+  background: #0f1b28;
+  color: var(--color-text);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 0.5rem 0.6rem;
+  min-width: 200px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.col-auto {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.g-2 {
+  gap: 0.5rem;
+}
+
+.g-3 {
+  gap: 1.5rem;
+}
+
+.align-items-end {
+  align-items: flex-end;
+}
+
+/* Buttons */
+.btn {
+  cursor: pointer;
+  border: 0;
+  padding: 0.55rem 0.9rem;
+  border-radius: 10px;
+  font-weight: 600;
+  display: inline-block;
+  text-align: center;
+}
+
+.btn-sm {
+  padding: 0.35rem 0.6rem;
+  font-size: 0.875rem;
+}
+
+.btn-primary {
+  background: var(--color-accent);
+  color: #0a0f14;
+}
+
+.btn-info {
+  background: #38bdf8;
+  color: #0a0f14;
+}
+
+.btn-outline-secondary {
+  background: transparent;
+  color: var(--color-text);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.btn-outline-danger {
+  background: transparent;
+  color: #fca5a5;
+  border: 1px solid #ef4444;
+}
+
+.btn:hover {
+  filter: brightness(1.06);
+}
