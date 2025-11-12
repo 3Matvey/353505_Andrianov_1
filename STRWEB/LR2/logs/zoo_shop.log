@@ -2369,3 +2369,47 @@ ValueError: The view store.views.news_detail didn't return an HttpResponse objec
 [WARNING] 2025-10-25 10:01:41,468 django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
 [WARNING] 2025-10-25 10:02:30,862 django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
 [WARNING] 2025-10-25 10:43:46,368 django.request Not Found: /favicon.ico
+[WARNING] 2025-10-29 21:29:18,400 django.request Not Found: /favicon.ico
+[ERROR] 2025-11-10 14:55:30,982 django.request Internal Server Error: /products/FOOD001/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\user\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\user\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "M:\IGI_4_sem\353505_Andrianov_1\STRWEB\LR2\store\views.py", line 181, in product_detail
+    review.client = request.user.client_profile
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\django\utils\functional.py", line 253, in inner
+    return func(_wrapped, *args)
+  File "C:\Users\user\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\django\db\models\fields\related_descriptors.py", line 531, in __get__
+    raise self.RelatedObjectDoesNotExist(
+    ...<2 lines>...
+    )
+django.contrib.auth.models.User.client_profile.RelatedObjectDoesNotExist: User has no client_profile.
+[WARNING] 2025-11-10 14:55:31,276 django.request Not Found: /favicon.ico
+[ERROR] 2025-11-10 14:55:49,233 django.request Internal Server Error: /cart/checkout/
+Traceback (most recent call last):
+  File "C:\Users\user\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+  File "C:\Users\user\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "C:\Users\user\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\django\contrib\auth\decorators.py", line 59, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+  File "M:\IGI_4_sem\353505_Andrianov_1\STRWEB\LR2\store\views.py", line 468, in cart_checkout
+    client = request.user.client_profile
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\user\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\django\utils\functional.py", line 253, in inner
+    return func(_wrapped, *args)
+  File "C:\Users\user\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\django\db\models\fields\related_descriptors.py", line 531, in __get__
+    raise self.RelatedObjectDoesNotExist(
+    ...<2 lines>...
+    )
+django.contrib.auth.models.User.client_profile.RelatedObjectDoesNotExist: User has no client_profile.
+[WARNING] 2025-11-10 15:43:29,065 django.request Not Found: /favicon.ico
+[WARNING] 2025-11-10 16:44:28,355 django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2025-11-10 16:46:08,799 django.request Not Found: /favicon.ico
+[WARNING] 2025-11-10 16:46:37,646 django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2025-11-10 16:47:54,265 django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[WARNING] 2025-11-10 17:12:19,901 django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json

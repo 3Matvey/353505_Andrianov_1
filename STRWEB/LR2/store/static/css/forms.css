@@ -1,6 +1,5 @@
 /* Form controls and interactive elements */
 
-/* Field state indicators */
 input:required,
 select:required,
 textarea:required {
@@ -25,13 +24,13 @@ select:out-of-range,
 textarea:out-of-range {
   border-color: #ef4444;
 }
-
+/*Если чекбокс или радиокнопка включена, текст метки рядом становится ярким*/
 input[type="checkbox"]:checked + label,
 input[type="radio"]:checked + label {
   color: var(--color-accent);
 }
 
-/* Placeholder styling */
+/* подсказки */
 input::placeholder,
 textarea::placeholder {
   color: #94a3b8;
@@ -39,7 +38,7 @@ textarea::placeholder {
   opacity: 0.85;
 }
 
-/* Range inputs */
+/* диапазоны */
 input[type="number"]:in-range {
   border-color: #22c55e;
   box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.25);
@@ -50,12 +49,13 @@ input[type="number"]:out-of-range {
   box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.2);
 }
 
-/* Layout helpers */
+/* метка над полем ввода */
 .form-label {
   display: block;
   margin-bottom: 0.25rem;
 }
 
+/*текстовые поля и списки*/
 .form-control,
 .form-select {
   background: #0f1b28;

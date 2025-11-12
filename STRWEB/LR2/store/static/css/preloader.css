@@ -17,7 +17,6 @@
     pointer-events: none; 
   }
   
-  /* Спиннер с полосками */
   .preloader .spinner {
     position: relative;
     width: 64px;

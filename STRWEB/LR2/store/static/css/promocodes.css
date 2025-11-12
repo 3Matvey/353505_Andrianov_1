@@ -4,6 +4,7 @@
   margin: 0 auto;
 }
 
+/* секция со списками промокодов */
 .promocodes-section {
   margin: 2rem 0;
 }
@@ -16,7 +17,7 @@
   padding-bottom: 0.5rem;
 }
 
-/* Active promocodes */
+/* активные промокоды */
 .active-promocodes {
   background: linear-gradient(135deg, rgba(45,212,191,0.1), rgba(167,139,250,0.1));
   border: 1px solid var(--color-accent);
@@ -25,7 +26,7 @@
   margin-bottom: 2rem;
 }
 
-/* Archived promocodes */
+/* архивные промокоды */
 .archived-promocodes {
   background: var(--color-surface);
   border: 1px solid rgba(255,255,255,0.08);
@@ -33,7 +34,7 @@
   padding: 1.5rem;
 }
 
-/* Promocode cards */
+/* карточка промокода */
 .promocode-card {
   background: var(--color-surface);
   border-radius: 10px;

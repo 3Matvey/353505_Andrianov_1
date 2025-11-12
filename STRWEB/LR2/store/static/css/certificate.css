@@ -1,13 +1,3 @@
-/* ====== Certificate styles — соответствие ТЗ ======
- * Покрывает:
- *  - Рамка из изображения: border-image (+ вендорные префиксы)
- *  - Фоновое изображение + поверх линейный градиент
- *  - z-index (слоёвка)
- *  - Настройка шрифтов (семейство, кернинг, лигатуры)
- *  - Выравнивание текста
- *  - Аккуратные размеры/тени
- */
-
 /* Контейнер секции, чтобы легко центрировать блок на странице */
 .about-certificate {
   display: grid;
@@ -15,7 +5,6 @@
   margin: 48px 0;
 }
 
-/* Сам сертификат */
 .certificate {
   /* 1) Рамка из изображения (SVG встроен в data URI) */
   border: 44px solid transparent;
@@ -49,7 +38,6 @@
   box-shadow: 0 10px 30px rgba(0,0,0,.15);
 }
 
-/* Типографика элементов сертификата */
 .cert-title {
   margin: 0 0 .35em;
   font-size: clamp(22px, 2.2vw, 28px);
@@ -60,7 +48,7 @@
 
 .cert-std {
   margin: 0 0 .25em;
-  font-variant: small-caps;  /* демонстрация варианта шрифта */
+  font-variant: small-caps;
   font-size: clamp(16px, 1.6vw, 20px);
   color: #2a3a45;
 }
@@ -72,7 +60,7 @@
   color: #384b55;
 }
 
-/* На тёмных темах блок не должен вырываться по контрасту */
+/* на тёмных темах блок не вырывается по контрасту */
 @media (prefers-color-scheme: dark) {
   .cert-title { color: #34e6d0; }
   .cert-std { color: #d9e5ea; }
