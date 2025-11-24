@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Словарь — Zoo Shop{% endblock %}
+
+{% block content %}
+  <h1>Словарь терминов и понятий</h1>
+  <p class="text-muted">Наведите курсор на <abbr title="Stock Keeping Unit — складская единица">SKU</abbr>, чтобы увидеть расшифровку.</p>
+
+  <section class="mb-4" aria-label="Определения">
+    <h2 class="h4">Определения</h2>
+    <p>
+      <dfn id="def-promo">Промокод</dfn> — буквенно-цифровая последовательность для получения скидки.
+    </p>
+    <blockquote class="blockquote">
+      <p>«Скидка применяется только к товарам без уценки»</p>
+      <footer class="blockquote-footer">Правила акций Zoo Shop</footer>
+    </blockquote>
+    <p>Короткая цитата: <q cite="https://example.com/rules">Акции не суммируются</q>.</p>
+  </section>
+
+  <section class="mb-4" aria-label="Часто задаваемые вопросы">
+    <h2 class="h4">FAQ</h2>
+    <div class="faq-container">
+      <details class="faq-item">
+        <summary class="faq-question">Как применить промокод при оформлении заказа?</summary>
+        <div class="faq-answer">
+          <p>Введите промокод в поле «Промокод» на этапе корзины и нажмите «Применить».
+          Скидка будет пересчитана автоматически, если условия акции выполняются.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-question">Можно ли изменить количество товара в корзине?</summary>
+        <div class="faq-answer">
+          <p>Да. В корзине укажите нужное количество в соответствующем поле и нажмите «Изменить».
+          Итоговая сумма пересчитается сразу.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-question">Какие способы оплаты доступны?</summary>
+        <div class="faq-answer">
+          <p>Мы принимаем оплату наличными, банковскими картами и электронными кошельками.
+          Также доступна рассрочка для товаров свыше 100 рублей.</p>
+        </div>
+      </details>
+      <details class="faq-item">
+        <summary class="faq-question">Как оформить возврат товара?</summary>
+        <div class="faq-answer">
+          <p>Возврат возможен в течение 14 дней с момента покупки при наличии чека и сохранении товарного вида.
+          Обратитесь к нашим консультантам для оформления возврата.</p>
+        </div>
+      </details>
+    </div>
+  </section>
+
+  <section class="mb-4" aria-label="Пример формата данных">
+    <h2 class="h4">Пример формата данных</h2>
+    <pre><code>{
+  "sku": "CAT-FOOD-001",
+  "name": "Cat Salmon Feed",
+  "price": 12.50,
+  "currency": "BYN"
+}</code></pre>
+  </section>
+
+  {% for fa in faqs %}
+    <div class="mb-4">
+      <h5>{{ fa.question }}</h5>
+      <p>{{ fa.answer|linebreaks }}</p>
+      <small class="text-muted">Добавлено: {{ fa.created_at|date:"Y-m-d" }}</small>
+    </div>
+  {% empty %}
+    <p class="text-muted">Пока нет вопросов.</p>
+  {% endfor %}
+{% endblock %}

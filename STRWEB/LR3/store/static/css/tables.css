@@ -1,0 +1,127 @@
+/* таблицы */
+table { 
+  width: 100%; 
+  border-collapse: separate; 
+  border-spacing: 0;
+  margin: 2rem 0;
+  background: var(--color-surface);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  table-layout: fixed; /* фиксированная ширина столбцов для стабильной вёрстки */
+  word-wrap: break-word; /* перенос длинных слов */
+}
+
+/* заголовки столбцов */
+th { 
+  text-align: left; 
+  background: var(--color-accent);
+  color: #0a0f14;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.9rem;
+}
+
+/* ячейки */
+th, td { 
+  padding: 1rem 1.5rem; 
+  vertical-align: middle; /* вертикальное выравнивание */
+  border: none; /* убираем двойные линии */
+}
+
+/* горизонтальное выравнивание содержимого */
+td { 
+  text-align: left; 
+}
+
+/* разделение строк, добавляет тонкую линию */
+tr + tr td { 
+  border-top: 1px solid rgba(255,255,255,0.06); 
+}
+
+/* разделитель под заголовком */
+thead tr th { 
+  border-bottom: 1px solid rgba(255,255,255,0.10); 
+}
+
+/* разделитель между thead и tbody */
+thead + tbody tr:first-child td {
+  border-top: 1px solid rgba(255,255,255,0.10);
+}
+
+/* вертикальные разделители между столбцами */
+tbody td + td, thead th + th {
+  border-left: 1px solid rgba(255,255,255,0.06);
+}
+
+/* оформление пустых ячеек */
+td:empty { 
+  background: rgba(167,139,250,0.08); 
+  font-style: italic;
+  color: var(--color-muted);
+}
+
+/* альтернатива для случаев, когда :empty не срабатывает */
+td.is-empty {
+  background: rgba(167,139,250,0.08);
+  font-style: italic;
+  color: var(--color-muted);
+}
+
+/* оформление заголовка таблицы над таблицей */
+caption { 
+  caption-side: top; 
+  text-align: left; 
+  padding: 1rem 1.5rem 0.5rem; 
+  font-weight: 700; 
+  font-size: 1.2rem;
+  color: var(--color-accent);
+  background: var(--color-surface);
+}
+
+/* зебра: стилизация строк */
+tbody tr:nth-child(odd) { 
+  background: rgba(255,255,255,0.02); 
+}
+
+tbody tr:nth-child(even) { 
+  background: rgba(255,255,255,0.05); 
+}
+
+/* дополнительная стилизация столбцов (пример: 3-й столбец) */
+tbody td:nth-child(3) {
+  background: rgba(255,255,255,0.03);
+}
+
+/* первая и последняя строки без границ */
+tbody tr:first-child td { 
+  border-top: none;
+}
+
+tbody tr:last-child td { 
+  border-bottom: none;
+}
+
+/* позиционирование таблицы на странице */
+.table-container {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.table-container > table {
+  max-width: 1100px; /* ограничение ширины таблицы */
+  margin: 0 auto;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  table {
+    font-size: 0.9rem;
+  }
+  
+  th, td {
+    padding: 0.75rem 1rem;
+  }
+}

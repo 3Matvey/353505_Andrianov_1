@@ -1,0 +1,152 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Zoo Shop{% endblock %}</title>
+  
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/616/616408.png" type="image/png">
+  <link rel="shortcut icon" href="https://cdn-icons-png.flaticon.com/512/616/616408.png" type="image/png">
+  
+  <!-- Project CSS (modular) -->
+  <link rel="stylesheet" href="{% static 'css/core.css' %}">
+  <link rel="stylesheet" href="{% static 'css/nav.css' %}">
+  <link rel="stylesheet" href="{% static 'css/tables.css' %}">
+  <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components.css' %}">
+  {% if request.resolver_match.url_name == 'home' %}
+  <link rel="stylesheet" href="{% static 'css/preloader.css' %}">
+  <link rel="stylesheet" href="{% static 'css/animations.css' %}">
+  {% endif %}
+  {% if 'reviews' in request.resolver_match.url_name %}
+  <link rel="stylesheet" href="{% static 'css/reviews.css' %}">
+  {% endif %}
+  {% if 'promocodes' in request.resolver_match.url_name %}
+  <link rel="stylesheet" href="{% static 'css/promocodes.css' %}">
+  {% endif %}
+</head>
+<body>
+
+  <nav class="site-nav" itemscope itemtype="https://schema.org/SiteNavigationElement">
+    <div class="container">
+
+      <!-- Бренд -->
+      <span itemscope itemtype="https://schema.org/Organization">
+        <a class="navbar-brand" href="{% url 'product_list' %}" itemprop="url"><span itemprop="name">Zoo Shop</span></a>
+      </span>
+
+      <!-- Бургер для мобильных -->
+      <div id="main-nav" class="nav-links">
+        <ul class="nav-left">
+
+          <!-- Каталог доступен всем -->
+          <li>
+            <a href="{% url 'product_list' %}" itemprop="url"><span itemprop="name">Каталог</span></a>
+          </li>
+
+          <!-- Новости доступны всем -->
+          <li>
+            <a href="{% url 'news' %}" itemprop="url"><span itemprop="name">Новости</span></a>
+          </li>
+
+          {% if user.is_superuser %}
+            <!-- Админ-панель только для суперпользователя -->
+            <li>
+              <a href="{% url 'admin:index' %}" itemprop="url"><span itemprop="name">Админ-панель</span></a>
+            </li>
+          {% endif %}
+
+          {% if user.is_authenticated and not user.is_superuser %}
+            <!-- Личный кабинет для аутентифицированных (клиенты и сотрудники) -->
+            <li>
+              <a href="{% url 'profile' %}" itemprop="url"><span itemprop="name">Личный кабинет</span></a>
+            </li>
+          {% endif %}
+
+          {% if user.is_authenticated and user.employee_profile %}
+            <!-- Дашборд сотрудника -->
+            <li>
+              <a href="{% url 'employee_dashboard' %}" itemprop="url"><span itemprop="name">Дашборд сотрудника</span></a>
+            </li>
+          {% endif %}
+
+           <li><a href="{% url 'home' %}" itemprop="url"><span itemprop="name">Главная</span></a></li>
+          <li><a href="{% url 'about' %}" itemprop="url"><span itemprop="name">О компании</span></a></li>
+          <li><a href="{% url 'glossary' %}" itemprop="url"><span itemprop="name">Словарь</span></a></li>
+          <li><a href="{% url 'contacts' %}" itemprop="url"><span itemprop="name">Контакты</span></a></li>
+          <li><a href="{% url 'vacancies' %}" itemprop="url"><span itemprop="name">Вакансии</span></a></li>
+          <li><a href="{% url 'promocodes' %}" itemprop="url"><span itemprop="name">Промокоды</span></a></li>
+          <li><a href="{% url 'privacy' %}" itemprop="url"><span itemprop="name">Политика конфиденциальности</span></a></li>
+          <li>
+            <a href="{% url 'cart' %}">Корзина</a>
+          </li>
+
+
+        </ul>
+
+        <ul class="nav-right">
+          {% if user.is_authenticated %}
+            <li>
+              <span class="nav-hello">
+                Привет, {{ user.get_username }}
+              </span>
+            </li>
+            <li>
+              <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="linklike">
+                  Выйти
+                </button>
+              </form>
+            </li>
+          {% else %}
+            <li>
+              <a href="{% url 'login' %}">Войти</a>
+            </li>
+            <li>
+              <a href="{% url 'signup' %}">Регистрация</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  {% if request.resolver_match.url_name == 'home' %}
+  <!-- Preloader (only on home page) -->
+  <div class="preloader" id="preloader">
+    <div class="spinner">
+      <div></div><div></div><div></div><div></div>
+    <div></div><div></div><div></div><div></div>
+    </div>
+  </div>
+  {% endif %}
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    &copy; {% now "Y" %} Zoo Shop
+  </footer>
+
+  {% if request.resolver_match.url_name == 'home' %}
+  <script>
+    // Hide preloader when page loads (only on home page)
+    window.addEventListener('load', function() {
+      const preloader = document.getElementById('preloader');
+      if (preloader) {
+        setTimeout(() => {
+          preloader.classList.add('hidden');
+          setTimeout(() => {
+            preloader.style.display = 'none';
+          }, 500);
+        }, 2000); // Show preloader for 2 seconds to see animation
+      }
+    });
+  </script>
+  {% endif %}
+
+</body>
+</html>

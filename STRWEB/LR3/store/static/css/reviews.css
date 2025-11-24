@@ -1,0 +1,181 @@
+/* reviews form with font keywords for components */
+.reviews-form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2rem;
+  background: var(--color-surface);
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.reviews-form h2 {
+  color: var(--color-accent);
+  text-align: center;
+  margin-bottom: 2rem;
+  font-family: "Merriweather", serif;
+  font-weight: 700;
+}
+
+/* группа полей формы */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+/* подпись к полю */
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* поля ввода: sans-serif как читаемый универсальный вариант */
+input[type="text"],
+input[type="email"],
+input[type="number"] {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+/* числовые поля: табличные цифры */
+input[type="number"] {
+  font-variant-numeric: tabular-nums;
+}
+
+/* текстовая область */
+textarea {
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  font-size: 1rem;
+}
+
+/* выпадающий список */
+select {
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+}
+
+/* кнопка отправки */
+.review-submit {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* рейтинг звёздами: контейнер */
+.rating-stars {
+  display: flex;
+  gap: 0.5rem;
+  margin: 1rem 0;
+  direction: rtl; /* для корректной подсветки соседями через ~ */
+}
+
+/* рейтинг: скрываем радиокнопки */
+.rating-stars input[type="radio"] {
+  display: none;
+}
+
+/* рейтинг: метка-звезда */
+.rating-stars label {
+  font-size: 2rem;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+/* рейтинг: подсветка при наведении и выборе */
+.rating-stars label:hover,
+.rating-stars label:hover ~ label,
+.rating-stars input:checked ~ label {
+  color: #ffd700;
+}
+
+/* псевдоклассы: общее поведение фокуса и ховера у полей */
+input[type="text"],
+input[type="email"],
+input[type="number"],
+textarea,
+select {
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  box-shadow: 0 0 0 3px rgba(167,139,250,0.25);
+}
+
+input:hover,
+textarea:hover,
+select:hover {
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.12);
+}
+
+/* псевдоклассы: disabled и readonly */
+input:disabled,
+textarea:disabled,
+select:disabled,
+input[readonly],
+textarea[readonly] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* псевдоклассы: required + валидация */
+input:required:invalid,
+textarea:required:invalid,
+select:required:invalid {
+  box-shadow: 0 0 0 2px rgba(239,68,68,0.6);
+}
+
+input:required:valid,
+textarea:required:valid,
+select:required:valid {
+  box-shadow: 0 0 0 2px rgba(34,197,94,0.6);
+}
+
+/* псевдоэлемент: плейсхолдер */
+::placeholder {
+  color: var(--color-muted);
+  opacity: 1;
+}
+
+/* карточка отзыва */
+.review-card {
+  background: var(--color-surface);
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 1rem 0;
+  border-left: 4px solid var(--color-accent);
+}
+
+/* автор отзыва */
+.review-author {
+  font-weight: 600;
+  color: var(--color-accent);
+  margin-bottom: 0.5rem;
+}
+
+/* рейтинг в карточке */
+.review-rating {
+  color: #ffd700;
+  margin-bottom: 1rem;
+}
+
+/* текст отзыва */
+.review-text {
+  font-style: italic;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+/* дата отзыва */
+.review-date {
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}

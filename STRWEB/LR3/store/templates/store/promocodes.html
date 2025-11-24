@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Промокоды и купоны — Zoo Shop{% endblock %}
+
+{% block content %}
+<div class="promocodes-container">
+  <h1>Промокоды и купоны</h1>
+  
+  <!-- Активные промокоды -->
+  <section class="promocodes-section">
+    <div class="active-promocodes">
+      <h2>Активные промокоды</h2>
+      {% if active_promocodes %}
+        {% for promocode in active_promocodes %}
+          <div class="promocode-card">
+            <div class="promocode-info">
+              <div class="promocode-code">{{ promocode.code }}</div>
+              <div class="promocode-description">Скидка {{ promocode.discount }}% на все товары</div>
+              <div class="promocode-discount">-{{ promocode.discount }}%</div>
+            </div>
+            <div class="promocode-status status-active">Активен</div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="text-muted">Нет активных промокодов.</p>
+      {% endif %}
+    </div>
+  </section>
+
+  <!-- Архивные промокоды -->
+  <section class="promocodes-section">
+    <div class="archived-promocodes">
+      <h2>Архивные промокоды</h2>
+      {% if archived_promocodes %}
+        {% for promocode in archived_promocodes %}
+          <div class="promocode-card">
+            <div class="promocode-info">
+              <div class="promocode-code">{{ promocode.code }}</div>
+              <div class="promocode-description">Скидка {{ promocode.discount }}% на все товары</div>
+              <div class="promocode-discount">-{{ promocode.discount }}%</div>
+            </div>
+            <div class="promocode-status status-expired">Истек</div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <p class="text-muted">Нет архивных промокодов.</p>
+      {% endif %}
+    </div>
+  </section>
+</div>
+{% endblock %}

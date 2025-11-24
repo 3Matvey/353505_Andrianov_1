@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Главная — Zoo Shop{% endblock %}
+
+{% block content %}
+  <nav class="mb-3" aria-label="Быстрая навигация по секциям">
+    <ul class="nav nav-pills flex-wrap">
+      <li class="nav-item"><a class="nav-link" href="#top">Вверх</a></li>
+      <li class="nav-item"><a class="nav-link" href="#banners">Баннеры</a></li>
+      <li class="nav-item"><a class="nav-link" href="#catalog">Каталог</a></li>
+      <li class="nav-item"><a class="nav-link" href="#last-news">Последняя новость</a></li>
+      <li class="nav-item"><a class="nav-link" href="#partners">Партнеры</a></li>
+      <li class="nav-item"><a class="nav-link" href="#downloads">Скачать</a></li>
+    </ul>
+  </nav>
+
+  <header id="top">
+    <!-- Анимированная сцена с рыбками и водорослями -->
+    <div class="sea-scene">
+      <div class="fish"></div>
+      <div class="fish"></div>
+      <div class="fish"></div>
+      <div class="seaweed"></div>
+      <div class="seaweed"></div>
+      <div class="seaweed"></div>
+    </div>
+    
+    <!-- Заголовок с задержкой появления -->
+    <h1 class="animated-title">Zoo Shop — ваш зоомагазин</h1>
+  </header>
+
+  <!-- Баннеры -->
+  <section id="banners" aria-label="Рекламные баннеры" class="mb-4">
+    <div class="row">
+      {% for banner in banners %}
+        <div class="col-md-4 mb-3">
+          {# Пример адаптивного изображения: если доступен массив источников, иначе fallback #}
+          {% if banner.srcset %}
+            <img src="{{ banner.src }}" srcset="{{ banner.srcset }}" sizes="(max-width: 576px) 100vw, (max-width: 992px) 33vw, 300px" alt="Баннер {{ forloop.counter }}" class="img-fluid rounded shadow">
+          {% else %}
+            <img src="{{ banner }}" alt="Баннер {{ forloop.counter }}" class="img-fluid rounded shadow">
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- Краткий каталог товаров -->
+  <section id="catalog" aria-label="Каталог товаров" class="mb-4">
+    <h2>Популярные товары</h2>
+    <ul class="list-group">
+      {% for p in products %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <a href="{% url 'product_detail' p.sku %}">{{ p.name }}</a>
+          <span class="badge bg-primary">{{ p.price }} р.</span>
+        </li>
+      {% empty %}
+        <li class="list-group-item">Нет товаров для отображения.</li>
+      {% endfor %}
+    </ul>
+    <a href="{% url 'product_list' %}" class="btn btn-outline-primary mt-2">Весь каталог</a>
+  </section>
+
+  <!-- Последняя новость -->
+  <section id="last-news" aria-label="Последняя новость" class="mb-4">
+    <h2>Последняя новость</h2>
+    <div>
+      <strong>Ваше текущее время:</strong>
+      <time datetime="{{ user_time|date:'c' }}">
+        {{ user_time|date:"Y-m-d H:i:s" }} ({{ user_time.tzinfo }})
+      </time>
+    </div>
+    {% if article %}
+      <div class="card mt-2">
+        {% if article.image %}
+          <img src="{{ article.image.url }}" class="card-img-top" alt="{{ article.title }}">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{ article.title }}</h5>
+          <p class="card-text">{{ article.content|truncatechars:300 }}</p>
+          <a href="{% url 'news-detail' article.pk %}" class="btn btn-sm btn-info">Читать далее</a>
+        </div>
+        <div class="card-footer text-muted">
+          Опубликовано:
+          <time datetime="{{ article.published_at|date:'c' }}">{{ article.published_at|date:"Y-m-d H:i" }}</time>
+        </div>
+      </div>
+    {% else %}
+      <p class="text-muted">Новостей нет.</p>
+    {% endif %}
+  </section>
+
+  <!-- Партнеры -->
+  <section id="partners" aria-label="Партнеры" class="mb-4">
+    <h2>Наши партнеры</h2>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th id="th-logo" scope="col">Логотип</th>
+          <th id="th-name" scope="col">Название</th>
+          <th id="th-site" scope="col">Сайт</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for partner in partners %}
+          <tr>
+            <td headers="th-logo">
+              {% if partner.logo %}
+                <img src="{{ partner.logo.url }}" alt="{{ partner.name }}" style="max-height:50px;">
+              {% else %}
+                <span class="text-muted">Нет логотипа</span>
+              {% endif %}
+            </td>
+            <td headers="th-name">{{ partner.name }}</td>
+            <td headers="th-site">
+              {% if partner.website %}
+                <a href="{{ partner.website }}" target="_blank" rel="noopener">Сайт</a>
+              {% else %}
+                <span class="text-muted">Нет сайта</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="3">Нет партнеров.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Скачивания -->
+  <section id="downloads" class="mb-4" aria-label="Файлы для скачивания">
+    <h2>Полезные файлы</h2>
+    <p>
+      <a href="{% static 'docs/price-list.pdf' %}" download class="btn btn-outline-secondary">
+        Скачать прайс-лист (PDF)
+      </a>
+    </p>
+    <p class="small text-muted">Файл предназначен для скачивания, откроется локально у пользователя.</p>
+  </section>
+{% endblock %}

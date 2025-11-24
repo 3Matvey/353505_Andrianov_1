@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }} — Zoo Shop{% endblock %}
+
+{% block content %}
+  <h1>{{ product.name }}</h1>
+  <p><strong>Артикул:</strong> {{ product.sku }}</p>
+  <p><strong>Категория:</strong> {{ product.category.name }}</p>
+  <p><strong>Цена:</strong> {{ product.price }} р.</p>
+  {% if product.suppliers.exists %}
+    <p><strong>Поставщики:</strong>
+      {% for s in product.suppliers.all %}
+        {{ s.name }}{% if not forloop.last %}, {% endif %}
+      {% endfor %}
+    </p>
+  {% endif %}
+  
+    {% if user.is_superuser or user.employee_profile %}
+    <form method="post" action="{% url 'product_delete' product.sku %}" class="d-inline">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-danger me-2">
+          Удалить
+        </button>
+      </form>
+    {% endif %}
+
+  <div class="mt-4">
+    <!-- Кнопка “Купить” -->
+    <form method="post" action="{% url 'cart_add' product.sku %}" class="d-inline">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-success me-2">
+        Добавить в корзину
+      </button>
+    </form>
+    <a href="{% url 'product_list' %}" class="btn btn-secondary">
+      ← Назад к списку
+    </a>
+  </div>
+  <hr>
+<h3>Отзывы</h3>
+
+{% if reviews %}
+  <ul class="list-group mb-4">
+    {% for r in reviews %}
+      <li class="list-group-item">
+        <strong>{{ r.client.user.username }}</strong>
+        <span class="badge bg-secondary">{{ r.rating }} ⭐</span><br>
+        {{ r.comment|linebreaks }}<br>
+        <small class="text-muted">{{ r.date|date:"Y-m-d H:i" }}</small>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p class="text-muted">Пока никто не оставил отзыв.</p>
+{% endif %}
+
+{% if user.is_authenticated %}
+  <h4>Оставить свой отзыв</h4>
+  <form method="post" class="mb-5">
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+    <div class="mb-3">
+      {{ form.rating.label_tag }}  
+      {{ form.rating }}
+      {{ form.rating.errors }}
+    </div>
+    <div class="mb-3">
+      {{ form.comment.label_tag }}
+      {{ form.comment }}
+      {{ form.comment.errors }}
+    </div>
+    <button class="btn btn-primary">Отправить</button>
+  </form>
+{% else %}
+  <p><a href="{% url 'login' %}">Войдите</a>, чтобы оставить отзыв.</p>
+{% endif %}
+
+{% endblock %}

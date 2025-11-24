@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% block title %}Каталог товаров — Zoo Shop{% endblock %}
+
+{% block content %}
+  <h1 class="mb-4">Список товаров</h1>
+
+  <nav class="mb-2" aria-label="Быстрые ссылки">
+    <a class="me-3" href="#filters">К фильтрам</a>
+    <a href="#paging">К пагинации</a>
+  </nav>
+  <form id="filters" method="get" action="" class="row g-2 mb-4 align-items-end">
+    <!-- Поиск по названию -->
+    <div class="col-auto">
+      <label class="form-label">Поиск</label>
+      <input type="text" name="q" value="{{ selected_q }}" class="form-control" placeholder="Название…">
+    </div>
+
+    <div class="col-auto">
+      <label class="form-label">Артикул</label>
+      <input type="text" name="sku" value="{{ selected_sku }}" class="form-control" placeholder="SKU…" pattern="^[A-Za-z0-9\-_.]{2,32}$" title="2–32 символа: буквы, цифры, -, _, .">
+    </div>
+    
+    <!-- Категория -->
+    <div class="col-auto">
+      <label class="form-label">Категория</label>
+      <select name="category" class="form-select">
+        <option value="">Все</option>
+        {% for cat in categories %}
+          <option value="{{ cat.id }}" {% if cat.id|stringformat:"s" == selected_category %}selected{% endif %}>
+            {{ cat.name }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <!-- Поставщик -->
+    <div class="col-auto">
+      <label class="form-label">Поставщик</label>
+      <select name="supplier" class="form-select">
+        <option value="">Все</option>
+        {% for sup in suppliers %}
+          <option value="{{ sup.id }}" {% if sup.id|stringformat:"s" == selected_supplier %}selected{% endif %}>
+            {{ sup.name }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <!-- Диапазон цен -->
+    <div class="col-auto">
+      <label class="form-label">Цена от</label>
+      <input type="number" step="0.01" min="0" name="min_price" value="{{ selected_min_price }}" class="form-control">
+    </div>
+    <div class="col-auto">
+      <label class="form-label">до</label>
+      <input type="number" step="0.01" min="0" name="max_price" value="{{ selected_max_price }}" class="form-control">
+    </div>
+
+    <!-- Сортировка -->
+    <div class="col-auto">
+      <label class="form-label">Сортировать</label>
+      <select name="sort" class="form-select">
+        <option value="">По умолчанию</option>
+        <option value="name"  {% if selected_sort == 'name'  %}selected{% endif %}>Имя ↑</option>
+        <option value="-name" {% if selected_sort == '-name' %}selected{% endif %}>Имя ↓</option>
+        <option value="price" {% if selected_sort == 'price' %}selected{% endif %}>Цена ↑</option>
+        <option value="-price"{% if selected_sort == '-price' %}selected{% endif %}>Цена ↓</option>
+      </select>
+    </div>
+
+    <div class="col-auto">
+      <button type="submit" class="btn btn-primary mb-3">Применить</button>
+    </div>
+  </form>
+
+  <div class="products-grid">
+    {% for p in page_obj.object_list %}
+      <article class="product-item" itemscope itemtype="https://schema.org/Product">
+        <header>
+          <a href="{% url 'product_detail' p.sku %}" itemprop="url">
+            <h3 class="heading-transform" itemprop="name">{{ p.name }}</h3>
+          </a>
+          <div class="small">(<span itemprop="category">{{ p.category.name }}</span>)</div>
+          <meta itemprop="sku" content="{{ p.sku }}">
+        </header>
+        <div class="price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+          <span class="badge bg-primary rounded-pill"><span itemprop="price">{{ p.price }}</span> <span itemprop="priceCurrency" content="BYN">р.</span></span>
+          <link itemprop="availability" href="https://schema.org/InStock" />
+        </div>
+      </article>
+    {% empty %}
+      <div class="product-item">Товары не найдены.</div>
+    {% endfor %}
+  </div>
+
+    {% if page_obj.has_other_pages %}
+    <nav id="paging" class="mt-4">
+      <ul class="pagination">
+
+        {% if page_obj.has_previous %}
+          <li class="page-item">
+            <a class="page-link" href="?{% for key,val in request.GET.items %}{% if key != 'page' %}{{ key }}={{ val|urlencode }}&{% endif %}{% endfor %}page={{ page_obj.previous_page_number }}">←</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">←</span></li>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+          {% if num == page_obj.number %}
+            <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+          {% else %}
+            <li class="page-item">
+              <a class="page-link" href="?{% for key,val in request.GET.items %}{% if key != 'page' %}{{ key }}={{ val|urlencode }}&{% endif %}{% endfor %}page={{ num }}">{{ num }}</a>
+            </li>
+          {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+          <li class="page-item">
+            <a class="page-link" href="?{% for key,val in request.GET.items %}{% if key != 'page' %}{{ key }}={{ val|urlencode }}&{% endif %}{% endfor %}page={{ page_obj.next_page_number }}">→</a>
+          </li>
+        {% else %}
+          <li class="page-item disabled"><span class="page-link">→</span></li>
+        {% endif %}
+
+      </ul>
+    </nav>
+  {% endif %}
+
+{% endblock %}

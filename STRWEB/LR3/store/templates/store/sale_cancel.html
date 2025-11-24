@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Отмена заказа — #{{ sale.pk }}{% endblock %}
+{% block content %}
+  <h1 class="mb-4">Отменить заказ #{{ sale.pk }}?</h1>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Да, отменить</button>
+    <a href="{% url 'sale_detail' sale.pk %}" class="btn btn-link">Нет, вернуть</a>
+  </form>
+{% endblock %}
