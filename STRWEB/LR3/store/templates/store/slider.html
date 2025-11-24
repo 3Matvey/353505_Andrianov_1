@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Слайдер{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/slider.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<section class="lab-demo">
+  <div class="lab-layout">
+    <div class="slider-panel">
+      <div class="slider-root" data-slider-root>
+        <div class="slider-track">
+          {% for slide in slides %}
+            <article class="slider-slide" data-slide>
+              <a href="{{ slide.url }}" class="slide-link">
+                <img src="{{ slide.image }}" alt="{{ slide.title }}">
+                <div class="slider-caption">
+                  <h3>{{ slide.title }}</h3>
+                  <p>{{ slide.caption }}</p>
+                </div>
+              </a>
+            </article>
+          {% endfor %}
+        </div>
+        <button class="slider-nav prev" data-prev aria-label="Предыдущий слайд">‹</button>
+        <button class="slider-nav next" data-next aria-label="Следующий слайд">›</button>
+        <div class="slider-counter">
+          <span data-current>1</span>/<span data-total>{{ slides|length }}</span>
+        </div>
+        <div class="slider-pagination" data-pagination></div>
+      </div>
+    </div>
+
+    <form id="sliderControls" class="slider-controls">
+      <h2>Параметры поведения</h2>
+      <div class="control-row">
+        <label>
+          <span>loop</span>
+          <input type="checkbox" name="loop" checked>
+        </label>
+        <small>Зацикленное переключение</small>
+      </div>
+      <div class="control-row">
+        <label>
+          <span>navs</span>
+          <input type="checkbox" name="navs" checked>
+        </label>
+        <small>Показывать стрелки “назад/вперед”</small>
+      </div>
+      <div class="control-row">
+        <label>
+          <span>pags</span>
+          <input type="checkbox" name="pags" checked>
+        </label>
+        <small>Показывать пагинацию</small>
+      </div>
+      <div class="control-row">
+        <label>
+          <span>auto</span>
+          <input type="checkbox" name="auto" checked>
+        </label>
+        <small>Автопереключение слайдов</small>
+      </div>
+      <div class="control-row">
+        <label>
+          <span>stopMouseHover</span>
+          <input type="checkbox" name="stopMouseHover" checked>
+        </label>
+        <small>Пауза при наведении (только когда auto = true)</small>
+      </div>
+      <div class="control-row">
+        <label>
+          <span>delay (сек.)</span>
+          <input type="number" name="delay" min="1" max="30" step="1" value="5">
+        </label>
+        <small>Интервал автопереключения</small>
+      </div>
+    </form>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/slider.js' %}" defer></script>
+<script defer>
+  document.addEventListener('DOMContentLoaded', () => {
+    const root = document.querySelector('[data-slider-root]');
+    const controlForm = document.getElementById('sliderControls');
+
+    const slider = new ZooSlider(root, {
+      loop: true,
+      navs: true,
+      pags: true,
+      auto: true,
+      stopMouseHover: true,
+      delay: 5,
+    });
+
+    const collectConfig = () => ({
+      loop: controlForm.loop.checked,
+      navs: controlForm.navs.checked,
+      pags: controlForm.pags.checked,
+      auto: controlForm.auto.checked,
+      stopMouseHover: controlForm.stopMouseHover.checked,
+      delay: Number(controlForm.delay.value) || 5,
+    });
+
+    controlForm.addEventListener('change', () => slider.updateOptions(collectConfig()));
+    controlForm.addEventListener('input', () => slider.updateOptions(collectConfig()));
+  });
+</script>
+{% endblock %}
+

@@ -154,6 +154,30 @@ def promocodes(request):
     })
 
 
+def slider_page(request):
+    slides = [
+        {
+            "title": "Новинки для питомцев",
+            "caption": "Лучшие лаки и лакомства недели",
+            "image": "/media/news/Снимок_экрана_1_oktD0nW.png",
+            "url": "/products/",
+        },
+        {
+            "title": "События зоопарка",
+            "caption": "Читайте свежие новости компании",
+            "image": "/media/news/Снимок_экрана_2024-05-17_150737.png",
+            "url": "/news/",
+        },
+        {
+            "title": "Скидки на аксессуары",
+            "caption": "Акции доступны до конца месяца",
+            "image": "/media/news/Снимок_экрана_1_FADhcEz.png",
+            "url": "/promocodes/",
+        },
+    ]
+    return render(request, 'store/slider.html', {"slides": slides})
+
+
 def is_employee_or_super(user):
     return user.is_superuser or hasattr(user, "employee_profile")
 
