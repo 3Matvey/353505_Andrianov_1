@@ -3,6 +3,7 @@ class ContactsTable {
     if (!root) return;
     this.root = root;
     this.apiUrl = root.dataset.api;
+    this.createUrl = root.dataset.create;
 
     this.tbody = root.querySelector("#contactsBody");
     this.pagination = root.querySelector("#pagination");
@@ -28,7 +29,6 @@ class ContactsTable {
     this.sortKey = null;
     this.sortDir = "asc";
     this.selectedIds = new Set();
-    this.nextId = 10000;
 
     this.init();
   }
@@ -458,35 +458,68 @@ class ContactsTable {
     if (this.addSubmit) this.addSubmit.disabled = true;
   }
 
-  handleAdd() {
-    if (!this.addForm || !this.addSubmit) return;
+  getCsrfToken() {
+    const value = document.cookie
+      .split(";")
+      .map((c) => c.trim())
+      .find((c) => c.startsWith("csrftoken="));
+    return value ? decodeURIComponent(value.split("=")[1]) : "";
+  }
+
+  async handleAdd() {
+    if (!this.addForm || !this.addSubmit || !this.createUrl) return;
     if (this.addSubmit.disabled) return;
 
     const form = this.addForm;
     const payload = {
-      id: this.nextId++,
       name: form.elements["name"].value.trim(),
       role: form.elements["role"].value.trim(),
       description: form.elements["description"].value.trim(),
       phone: form.elements["phone"].value.trim(),
       email: form.elements["email"].value.trim(),
-      photo: form.elements["photo"].value.trim(),
+      photo_url: form.elements["photo"].value.trim(),
+      profile_url: form.elements["profile_url"].value.trim(),
     };
 
     this.showPreloader();
-    setTimeout(() => {
-      this.data.push(payload);
-      this.filtered = [...this.data];
-      this.applySort();
-      this.currentPage = this.totalPages;
-      this.render();
-      this.hidePreloader();
+    try {
+      const response = await fetch(this.createUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": this.getCsrfToken(),
+          "X-Requested-With": "XMLHttpRequest",
+        },
+        body: JSON.stringify(payload),
+      });
 
-      if (this.formStatus) {
-        this.formStatus.textContent = "Сотрудник добавлен в таблицу (клиентская вставка).";
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result?.error || "Не удалось добавить сотрудника");
       }
+
+      const contact = result.contact;
+      if (contact) {
+        this.data.push(contact);
+        this.filtered = [...this.data];
+        this.applySort();
+        this.currentPage = this.totalPages;
+        this.render();
+        this.showDetails(contact.id);
+        this.addForm.reset();
+        this.clearFormState();
+        if (this.formStatus) {
+          this.formStatus.textContent = "Сотрудник сохранён в базе и добавлен в таблицу.";
+        }
+      }
+    } catch (err) {
+      if (this.formStatus) {
+        this.formStatus.textContent = err.message || "Ошибка добавления сотрудника.";
+      }
+    } finally {
+      this.hidePreloader();
       this.addSubmit.disabled = true;
-    }, 250);
+    }
   }
 }
 
