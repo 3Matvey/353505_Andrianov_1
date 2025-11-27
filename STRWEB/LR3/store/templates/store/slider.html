@@ -5,9 +5,17 @@
 
 {% block extra_head %}
 <link rel="stylesheet" href="{% static 'css/slider.css' %}">
+<link rel="stylesheet" href="{% static 'css/preloader.css' %}">
 {% endblock %}
 
 {% block content %}
+
+<div id="sliderPreloader" class="preloader" aria-live="polite">
+  <div class="spinner">
+    <div></div><div></div><div></div><div></div>
+    <div></div><div></div><div></div><div></div>
+  </div>
+</div>
 
 <section class="lab-demo">
   <div class="lab-layout">
@@ -83,11 +91,30 @@
   </div>
 </section>
 
+<section class="lab-notes" id="formGenerator">
+  <h2>Генератор элементов формы</h2>
+  <p>Отметьте флажок, чтобы добавить новый настраиваемый элемент формы. Атрибуты можно менять на лету, состояние
+    сохраняется в localStorage и восстанавливается после обновления страницы. Каждый блок можно удалить.</p>
+  <label class="generator-toggle">
+    <input type="checkbox" id="formElementToggle">
+    Создать новый элемент (input type="text")
+  </label>
+  <div id="generatedElements" class="generated-list" aria-live="polite"></div>
+</section>
+
 {% endblock %}
 
 {% block extra_scripts %}
 <script src="{% static 'js/slider.js' %}" defer></script>
+<script src="{% static 'js/formGenerator.js' %}" defer></script>
 <script defer>
+  const hidePreloader = () => {
+    const preloader = document.getElementById('sliderPreloader');
+    if (preloader) preloader.classList.add('hidden');
+  };
+
+  window.addEventListener('load', hidePreloader);
+
   document.addEventListener('DOMContentLoaded', () => {
     const root = document.querySelector('[data-slider-root]');
     const controlForm = document.getElementById('sliderControls');
@@ -100,6 +127,8 @@
       stopMouseHover: true,
       delay: 5,
     });
+
+    hidePreloader();
 
     const collectConfig = () => ({
       loop: controlForm.loop.checked,

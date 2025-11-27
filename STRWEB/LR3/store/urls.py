@@ -41,6 +41,7 @@ urlpatterns = [
     path('contacts/', views.contacts, name='contacts'),
     path('contacts/lab/', views.contacts_lab, name='contacts_lab'),
     path('contacts/lab/data/', views.contacts_lab_data, name='contacts_lab_data'),
+    path('contacts/lab/add/', views.contacts_lab_add, name='contacts_lab_add'),
     path('privacy/', views.privacy, name='privacy'),
     path('vacancies/', views.vacancies, name='vacancies'),
     path('promocodes/', views.promocodes, name='promocodes'),

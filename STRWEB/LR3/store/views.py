@@ -1,8 +1,13 @@
 import base64
-#from datetime import datetime, timedelta, timezone
 import io
+import json
+import os
+import re
+from urllib.parse import urlsplit
+
 from django.http import JsonResponse
 from matplotlib import pyplot as plt
+from django.core.files.base import ContentFile
 from django.db.models.functions import TruncDate
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
@@ -10,9 +15,9 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import login
 from django.contrib import messages
 from django.db.models import Count
-from django.views.decorators.http import require_GET
+from django.views.decorators.http import require_GET, require_http_methods
 import requests
-from django.utils import timezone   
+from django.utils import timezone
 
 from .utils import fetch_nbrb_rates, fetch_exchange_rates
 from zoo_shop import settings
@@ -145,22 +150,87 @@ def contacts_lab(request):
 def contacts_lab_data(request):
     """
     Возвращает JSON с сотрудниками из таблицы Contact.
-    Минимум 10 записей обеспечивается через наполнение БД.
     """
-    placeholder = "https://placehold.co/120x120?text=Zoo"
-    contacts = []
-    for person in Contact.objects.all():
-        contacts.append({
+    contacts = [
+        {
             "id": person.id,
             "name": person.name,
             "role": person.role or "",
             "description": person.description or "",
             "phone": person.phone or "",
             "email": person.email or "",
-            "photo": request.build_absolute_uri(person.photo.url) if person.photo else placeholder,
-        })
+            "photo": request.build_absolute_uri(person.photo.url) if person.photo else "",
+        }
+        for person in Contact.objects.all()
+    ]
 
     return JsonResponse({"contacts": contacts})
+
+
+@require_http_methods(["POST"])
+def contacts_lab_add(request):
+    """Создаёт нового сотрудника в таблице Contact по данным из формы."""
+
+    try:
+        payload = json.loads(request.body.decode("utf-8"))
+    except (json.JSONDecodeError, UnicodeDecodeError):
+        return JsonResponse({"error": "Некорректный формат данных."}, status=400)
+
+    def fail(message, status=400):
+        return JsonResponse({"error": message}, status=status)
+
+    name = (payload.get("name") or "").strip()
+    role = (payload.get("role") or "").strip()
+    description = (payload.get("description") or "").strip()
+    phone = (payload.get("phone") or "").strip()
+    email = (payload.get("email") or "").strip()
+    profile_url = (payload.get("profile_url") or "").strip()
+    photo_url = (payload.get("photo_url") or "").strip()
+
+    if not all([name, role, description, phone, email, profile_url, photo_url]):
+        return fail("Пожалуйста, заполните все поля формы.")
+
+    phone_re = re.compile(r"^(?:\+375|8)\s*\(?\d{2,3}\)?(?:[\s-]*\d){7}$")
+    url_re = re.compile(r"^https?://.+\.(php|html)(/.*)?$", re.IGNORECASE)
+
+    if not url_re.match(profile_url):
+        return fail("URL профиля должен начинаться с http(s) и заканчиваться на .php или .html.")
+
+    if not phone_re.match(phone):
+        return fail("Телефон не соответствует требуемому формату.")
+
+    try:
+        photo_resp = requests.get(photo_url, timeout=8)
+        photo_resp.raise_for_status()
+    except Exception:
+        return fail("Не удалось скачать фото по указанному URL.", status=422)
+
+    filename = os.path.basename(urlsplit(photo_url).path) or "contact_photo.jpg"
+
+    contact = Contact(
+        name=name,
+        role=role,
+        description=description,
+        phone=phone,
+        email=email,
+    )
+    contact.photo.save(filename, ContentFile(photo_resp.content), save=False)
+    contact.save()
+
+    return JsonResponse(
+        {
+            "contact": {
+                "id": contact.id,
+                "name": contact.name,
+                "role": contact.role,
+                "description": contact.description,
+                "phone": contact.phone,
+                "email": contact.email,
+                "photo": request.build_absolute_uri(contact.photo.url) if contact.photo else "",
+            }
+        },
+        status=201,
+    )
 
 def privacy(request):
     return render(request, 'store/privacy.html')
