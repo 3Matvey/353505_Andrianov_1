@@ -145,20 +145,19 @@ def contacts_lab(request):
 def contacts_lab_data(request):
     """
     Возвращает JSON с сотрудниками из таблицы Contact.
-    Минимум 10 записей обеспечивается через наполнение БД.
     """
-    placeholder = "https://placehold.co/120x120?text=Zoo"
-    contacts = []
-    for person in Contact.objects.all():
-        contacts.append({
+    contacts = [
+        {
             "id": person.id,
             "name": person.name,
             "role": person.role or "",
             "description": person.description or "",
             "phone": person.phone or "",
             "email": person.email or "",
-            "photo": request.build_absolute_uri(person.photo.url) if person.photo else placeholder,
-        })
+            "photo": request.build_absolute_uri(person.photo.url) if person.photo else "",
+        }
+        for person in Contact.objects.all()
+    ]
 
     return JsonResponse({"contacts": contacts})
 
