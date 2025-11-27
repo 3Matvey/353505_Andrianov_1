@@ -38,6 +38,14 @@ class ContactsTable {
     this.loadData();
   }
 
+  withPreloader(action, delay = 150) {
+    this.showPreloader();
+    setTimeout(() => {
+      action();
+      this.hidePreloader();
+    }, delay);
+  }
+
   showPreloader() {
     if (this.preloader) {
       this.preloader.classList.remove("hidden");
@@ -78,16 +86,18 @@ class ContactsTable {
         if (!th) return;
         const key = th.dataset.key;
         if (!key) return;
-        if (this.sortKey === key) {
-          this.sortDir = this.sortDir === "asc" ? "desc" : "asc";
-        } else {
-          this.sortKey = key;
-          this.sortDir = "asc";
-        }
-        this.applySort();
-        this.currentPage = 1;
-        this.updateSortIndicators();
-        this.render();
+        this.withPreloader(() => {
+          if (this.sortKey === key) {
+            this.sortDir = this.sortDir === "asc" ? "desc" : "asc";
+          } else {
+            this.sortKey = key;
+            this.sortDir = "asc";
+          }
+          this.applySort();
+          this.currentPage = 1;
+          this.updateSortIndicators();
+          this.render();
+        });
       });
     }
 
@@ -196,10 +206,12 @@ class ContactsTable {
 
   resetFilter() {
     if (this.filterInput) this.filterInput.value = "";
-    this.filtered = [...this.data];
-    this.currentPage = 1;
-    this.applySort();
-    this.render();
+    this.withPreloader(() => {
+      this.filtered = [...this.data];
+      this.currentPage = 1;
+      this.applySort();
+      this.render();
+    }, 100);
   }
 
   get totalPages() {
@@ -226,6 +238,9 @@ class ContactsTable {
     this.tbody.innerHTML = slice
       .map((row) => {
         const checked = this.selectedIds.has(String(row.id)) ? "checked" : "";
+        const photoCell = row.photo
+          ? `<img src="${row.photo}" alt="${row.name || "Сотрудник"}">`
+          : "—";
         return `
           <tr data-id="${row.id}">
             <td class="checkbox-col">
@@ -235,7 +250,7 @@ class ContactsTable {
             <td>${row.role || ""}</td>
             <td>${row.phone || ""}</td>
             <td>${row.email || ""}</td>
-            <td><img src="${row.photo || ""}" alt="${row.name || "Сотрудник"}"></td>
+            <td>${photoCell}</td>
           </tr>
         `;
       })
@@ -258,10 +273,12 @@ class ContactsTable {
       btn.addEventListener("click", () => {
         const page = Number(btn.dataset.page);
         if (!isNaN(page)) {
-          this.currentPage = page;
-          this.renderTable();
-          this.syncSelectionState();
-          this.renderPagination();
+          this.withPreloader(() => {
+            this.currentPage = page;
+            this.renderTable();
+            this.syncSelectionState();
+            this.renderPagination();
+          });
         }
       });
     });
@@ -274,8 +291,11 @@ class ContactsTable {
   showDetails(id) {
     const row = this.findRowById(id);
     if (!row || !this.detailCard) return;
+    const photo = row.photo
+      ? `<img src="${row.photo}" alt="${row.name || "Сотрудник"}">`
+      : "";
     this.detailCard.innerHTML = `
-      <img src="${row.photo || ""}" alt="${row.name || "Сотрудник"}">
+      ${photo}
       <div>
         <h3>${row.name || ""}</h3>
         <p class="meta">${row.role || ""}</p>
