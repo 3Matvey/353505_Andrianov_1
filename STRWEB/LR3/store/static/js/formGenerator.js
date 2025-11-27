@@ -5,6 +5,7 @@ class FormElementGenerator {
     this.storageKey = "lab4_elements";
     this.toggle = root.querySelector("#formElementToggle");
     this.list = root.querySelector("#generatedElements");
+    this.counter = 0;
 
     this.attachEvents();
     this.restore();
@@ -24,13 +25,12 @@ class FormElementGenerator {
   templateConfig() {
     return {
       id: `gen-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
-      label: "Текстовое поле",
-      name: "customInput",
-      placeholder: "Введите текст",
-      maxlength: 50,
-      value: "",
-      readonly: false,
-      disabled: false,
+      label: "Пользовательское поле",
+      placeholder: "Введите значение",
+      min: 0,
+      max: 100,
+      step: 5,
+      required: true,
     };
   }
 
@@ -43,18 +43,17 @@ class FormElementGenerator {
       <div class="generated-preview">
         <label>
           <span class="preview-label">${config.label}</span>
-          <input type="text" name="${config.name}" placeholder="${config.placeholder}" maxlength="${config.maxlength}" value="${config.value}" ${config.readonly ? "readonly" : ""} ${config.disabled ? "disabled" : ""} />
+          <input type="range" min="${config.min}" max="${config.max}" step="${config.step}" placeholder="${config.placeholder}" ${config.required ? "required" : ""} />
         </label>
-        <div class="preview-meta">name=${config.name} · maxlength=${config.maxlength} · ${config.readonly ? "readonly" : "editable"} · ${config.disabled ? "disabled" : "active"}</div>
+        <div class="preview-meta">min=${config.min} · max=${config.max} · step=${config.step} · ${config.required ? "обязательно" : "необязательно"}</div>
       </div>
       <div class="generated-controls">
         <label>Подпись<input type="text" name="label" value="${config.label}"></label>
-        <label>name<input type="text" name="name" value="${config.name}"></label>
-        <label>placeholder<input type="text" name="placeholder" value="${config.placeholder}"></label>
-        <label>maxlength<input type="number" name="maxlength" min="1" max="200" value="${config.maxlength}"></label>
-        <label>value<input type="text" name="value" value="${config.value}"></label>
-        <label class="inline"><input type="checkbox" name="readonly" ${config.readonly ? "checked" : ""}> readonly</label>
-        <label class="inline"><input type="checkbox" name="disabled" ${config.disabled ? "checked" : ""}> disabled</label>
+        <label>Placeholder<input type="text" name="placeholder" value="${config.placeholder}"></label>
+        <label>min<input type="number" name="min" min="0" max="1000" value="${config.min}"></label>
+        <label>max<input type="number" name="max" min="1" max="2000" value="${config.max}"></label>
+        <label>step<input type="number" name="step" min="1" max="500" value="${config.step}"></label>
+        <label class="inline"><input type="checkbox" name="required" ${config.required ? "checked" : ""}> required</label>
         <button type="button" class="btn btn-outline-danger" data-remove>Удалить</button>
       </div>
     `;
@@ -63,8 +62,7 @@ class FormElementGenerator {
       const target = e.target;
       const name = target.name;
       if (!name) return;
-      const currentConfig = this.readStoredConfig(item) || config;
-      const newConfig = this.readConfig(item, currentConfig);
+      const newConfig = this.readConfig(item, config);
       this.updatePreview(item, newConfig);
       this.saveState();
     });
@@ -86,37 +84,36 @@ class FormElementGenerator {
       return field ? mapper(field.value) : null;
     };
 
-    const maxlength = Number(get("input[name='maxlength']")) || fallback.maxlength || 0;
-    const readonly = !!item.querySelector("input[name='readonly']")?.checked;
-    const disabled = !!item.querySelector("input[name='disabled']")?.checked;
+    const min = Number(get("input[name='min']")) || 0;
+    const max = Number(get("input[name='max']")) || 0;
+    const step = Number(get("input[name='step']")) || 1;
+    const required = !!item.querySelector("input[name='required']")?.checked;
 
     return {
       ...fallback,
       label: get("input[name='label']") || fallback.label,
-      name: get("input[name='name']") || fallback.name,
       placeholder: get("input[name='placeholder']") || fallback.placeholder,
-      maxlength: maxlength > 0 ? maxlength : fallback.maxlength,
-      value: get("input[name='value']") ?? fallback.value,
-      readonly,
-      disabled,
+      min: min > 0 ? min : 0,
+      max: max > min ? max : min + 1,
+      step: step > 0 ? step : 1,
+      required,
     };
   }
 
   updatePreview(item, config) {
     const labelEl = item.querySelector(".preview-label");
-    const inputEl = item.querySelector("input[type='text']");
+    const inputEl = item.querySelector("input[type='range']");
     const metaEl = item.querySelector(".preview-meta");
     if (labelEl) labelEl.textContent = config.label;
     if (inputEl) {
-      inputEl.name = config.name;
+      inputEl.min = config.min;
+      inputEl.max = config.max;
+      inputEl.step = config.step;
       inputEl.placeholder = config.placeholder;
-      inputEl.maxLength = config.maxlength;
-      inputEl.value = config.value;
-      inputEl.readOnly = config.readonly;
-      inputEl.disabled = config.disabled;
+      inputEl.required = config.required;
     }
     if (metaEl) {
-      metaEl.textContent = `name=${config.name} · maxlength=${config.maxlength} · ${config.readonly ? "readonly" : "editable"} · ${config.disabled ? "disabled" : "active"}`;
+      metaEl.textContent = `min=${config.min} · max=${config.max} · step=${config.step} · ${config.required ? "обязательно" : "необязательно"}`;
     }
     item.dataset.config = JSON.stringify(config);
   }
@@ -145,16 +142,6 @@ class FormElementGenerator {
       }
     });
     localStorage.setItem(this.storageKey, JSON.stringify(data));
-  }
-
-  readStoredConfig(item) {
-    const stored = item?.dataset?.config;
-    if (!stored) return null;
-    try {
-      return JSON.parse(stored);
-    } catch (e) {
-      return null;
-    }
   }
 
   restore() {

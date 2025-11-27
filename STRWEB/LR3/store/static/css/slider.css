@@ -216,7 +216,7 @@ body .lab-notes {
   font-weight: 600;
 }
 
-.generated-preview input[type="text"] {
+.generated-preview input[type="range"] {
   width: 100%;
 }
 

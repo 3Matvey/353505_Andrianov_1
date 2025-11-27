@@ -500,14 +500,12 @@ class ContactsTable {
 
       const contact = result.contact;
       if (contact) {
-        await this.loadData();
-
-        const idx = this.filtered.findIndex((row) => String(row.id) === String(contact.id));
-        if (idx >= 0) {
-          this.currentPage = Math.floor(idx / this.pageSize) + 1;
-          this.render();
-          this.showDetails(contact.id);
-        }
+        this.data.push(contact);
+        this.filtered = [...this.data];
+        this.applySort();
+        this.currentPage = this.totalPages;
+        this.render();
+        this.showDetails(contact.id);
         this.addForm.reset();
         this.clearFormState();
         if (this.formStatus) {
