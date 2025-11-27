@@ -10,10 +10,11 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import login
 from django.contrib import messages
 from django.db.models import Count
+from django.views.decorators.http import require_GET
 import requests
 from django.utils import timezone   
 
-from .utils import  fetch_nbrb_rates,  fetch_exchange_rates
+from .utils import fetch_nbrb_rates, fetch_exchange_rates
 from zoo_shop import settings
 from store.decorators import employee_required
 from store.forms import CompanyNewsForm, ProfileForm, ReviewForm, SaleForm, SignUpForm
@@ -134,6 +135,32 @@ def contacts(request):
     return render(request, 'store/contacts.html', {
         'people': people
     })
+
+
+def contacts_lab(request):
+    return render(request, 'store/contacts_lab.html')
+
+
+@require_GET
+def contacts_lab_data(request):
+    """
+    Возвращает JSON с сотрудниками из таблицы Contact.
+    Минимум 10 записей обеспечивается через наполнение БД.
+    """
+    placeholder = "https://placehold.co/120x120?text=Zoo"
+    contacts = []
+    for person in Contact.objects.all():
+        contacts.append({
+            "id": person.id,
+            "name": person.name,
+            "role": person.role or "",
+            "description": person.description or "",
+            "phone": person.phone or "",
+            "email": person.email or "",
+            "photo": request.build_absolute_uri(person.photo.url) if person.photo else placeholder,
+        })
+
+    return JsonResponse({"contacts": contacts})
 
 def privacy(request):
     return render(request, 'store/privacy.html')

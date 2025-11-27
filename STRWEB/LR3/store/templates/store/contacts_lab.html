@@ -1,0 +1,129 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Команда — JS таблица{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/contacts_lab.css' %}">
+<link rel="stylesheet" href="{% static 'css/preloader.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="lab-hero">
+  <div>
+    <p class="eyebrow">Лабораторная работа 3</p>
+    <h1>Интерактивная таблица сотрудников Zoo Shop</h1>
+    <p>
+      Данные подгружаются с сервера, сортируются по клику на заголовок, фильтруются по введённой подстроке и
+      отображаются постранично. Дополнительно реализована форма добавления сотрудников, детальная карточка
+      и премирование выбранных специалистов.
+    </p>
+  </div>
+</section>
+
+<section class="lab-controls" id="contactsLabRoot" data-api="{% url 'contacts_lab_data' %}">
+  <div class="control-row">
+    <div class="filter-block">
+      <label for="filterInput">Фильтр по подстроке</label>
+      <div class="filter-inputs">
+        <input type="text" id="filterInput" placeholder="Введите часть ФИО, должности, телефона или почты">
+        <button type="button" id="filterButton" class="btn btn-primary">Найти</button>
+        <button type="button" id="resetFilter" class="btn btn-outline-secondary">Сброс</button>
+      </div>
+    </div>
+    <div class="actions">
+      <button type="button" id="addToggle" class="btn btn-info">Добавить</button>
+      <button type="button" id="rewardButton" class="btn btn-primary" disabled>Премировать</button>
+    </div>
+  </div>
+
+  <div class="table-panel">
+    <div id="labPreloader" class="preloader lab-preloader hidden" aria-live="polite">
+      <div class="spinner">
+        <div></div><div></div><div></div><div></div>
+        <div></div><div></div><div></div><div></div>
+      </div>
+    </div>
+    <div class="table-wrapper">
+      <table class="contacts-table">
+        <thead>
+          <tr>
+            <th class="checkbox-col"><input type="checkbox" id="selectAll"></th>
+            <th data-key="name" class="sortable">ФИО<span class="sort-indicator"></span></th>
+            <th data-key="role" class="sortable">Должность<span class="sort-indicator"></span></th>
+            <th data-key="phone" class="sortable">Телефон<span class="sort-indicator"></span></th>
+            <th data-key="email" class="sortable">Почта<span class="sort-indicator"></span></th>
+            <th>Фото</th>
+          </tr>
+        </thead>
+        <tbody id="contactsBody">
+          <tr><td colspan="6" class="placeholder-cell">Загрузка...</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination" id="pagination"></div>
+  </div>
+
+  <section class="detail-section">
+    <h2>Карточка сотрудника</h2>
+    <div id="detailCard" class="detail-card">
+      <p class="text-muted">Выберите строку таблицы, чтобы увидеть подробности.</p>
+    </div>
+  </section>
+
+  <section class="reward-section">
+    <p class="reward-info text-muted">Отметьте нужных сотрудников и нажмите «Премировать», чтобы сгенерировать приказ.</p>
+    <div id="rewardOutput" class="reward-output"></div>
+  </section>
+
+  <section class="add-section" id="addSection" aria-hidden="true">
+    <h2>Добавить нового сотрудника</h2>
+    <form id="addForm" novalidate>
+      <div class="form-grid">
+        <label>
+          ФИО
+          <input type="text" name="name" required minlength="3" placeholder="Иванов Иван Иванович">
+        </label>
+        <label>
+          Должность
+          <input type="text" name="role" required placeholder="Специалист отдела закупок">
+        </label>
+        <label>
+          Описание
+          <textarea name="description" rows="3" required placeholder="Кратко опишите область ответственности"></textarea>
+        </label>
+        <label>
+          Телефон
+          <input type="tel" name="phone" required placeholder="+375 (29) 111-22-33">
+          <span class="hint" data-hint="phone"></span>
+        </label>
+        <label>
+          Email
+          <input type="email" name="email" required placeholder="user@example.com">
+        </label>
+        <label>
+          URL профиля (.php/.html)
+          <input type="url" name="profile_url" required placeholder="https://site.by/profile.php">
+          <span class="hint" data-hint="url"></span>
+        </label>
+        <label>
+          Фото (URL)
+          <input type="url" name="photo" required placeholder="https://site.by/photo.jpg">
+        </label>
+      </div>
+      <div class="form-actions">
+        <button type="button" id="addCancel" class="btn btn-outline-secondary">Отмена</button>
+        <button type="submit" id="addSubmit" class="btn btn-primary" disabled>Добавить в таблицу</button>
+      </div>
+      <div id="formStatus" class="form-status" aria-live="polite"></div>
+    </form>
+  </section>
+</section>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="{% static 'js/contactsLab.js' %}" defer></script>
+{% endblock %}
+
+
+
