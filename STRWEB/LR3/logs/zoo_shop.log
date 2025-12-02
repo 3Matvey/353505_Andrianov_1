@@ -2569,3 +2569,7 @@ requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='www.nbrb.by', port=44
 [WARNING] 2025-11-24 15:55:06,384 django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
 [WARNING] 2025-11-24 16:21:16,351 django.request Not Found: /.well-known/appspecific/com.chrome.devtools.json
 [WARNING] 2025-11-24 16:34:42,181 django.request Not Found: /favicon.ico
+[WARNING] 2025-11-27 17:21:24,574 django.request Not Found: /favicon.ico
+[WARNING] 2025-11-27 17:44:37,735 django.request Not Found: /favicon.ico
+[WARNING] 2025-11-27 18:02:34,039 django.request Not Found: /favicon.ico
+[WARNING] 2025-11-27 18:07:05,874 django.request Unprocessable Content: /contacts/lab/add/

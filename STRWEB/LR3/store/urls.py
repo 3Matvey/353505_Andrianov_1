@@ -15,6 +15,7 @@ urlpatterns = [
 
     # Продукты
     path('products/', views.product_list, name='product_list'),
+    path('products/data/', views.products_data, name='products_data'),
     path('products/<str:sku>/', views.product_detail, name='product_detail'),
     path('products/<str:sku>/buy/', views.create_sale, name='product_buy'),
     path('products/<str:sku>/delete/', views.product_delete, name='product_delete'),

@@ -503,6 +503,51 @@ def product_list(request):
     })
 
 
+@require_GET
+def products_data(request):
+    """Возвращает JSON со списком продуктов (без серверной пагинации),
+    поддерживает те же фильтры, что и `product_list`.
+    """
+    q = request.GET.get("q", "").strip()
+    sku = request.GET.get("sku", "").strip()
+    category = request.GET.get("category", "")
+    supplier = request.GET.get("supplier", "")
+    min_price = request.GET.get("min_price", "")
+    max_price = request.GET.get("max_price", "")
+    sort = request.GET.get("sort", "")
+
+    products = (Product.objects
+                .select_related("category")
+                .prefetch_related("suppliers")
+                .all())
+
+    if q:
+        products = products.filter(name__icontains=q)
+    if sku:
+        products = products.filter(sku__icontains=sku)
+    if category:
+        products = products.filter(category_id=category)
+    if supplier:
+        products = products.filter(suppliers__id=supplier)
+    if min_price:
+        products = products.filter(price__gte=min_price)
+    if max_price:
+        products = products.filter(price__lte=max_price)
+    if sort in ("name", "-name", "price", "-price"):
+        products = products.order_by(sort)
+
+    result = []
+    for p in products:
+        result.append({
+            'sku': p.sku,
+            'name': p.name,
+            'price': str(p.price),
+            'category__name': p.category.name if p.category else '',
+        })
+
+    return JsonResponse({'products': result})
+
+
 # def news(request):
 #     page      = int(request.GET.get("page", 1))
 #     page_size = 5

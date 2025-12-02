@@ -25,12 +25,12 @@ class FormElementGenerator {
   templateConfig() {
     return {
       id: `gen-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
-      label: "Пользовательское поле",
+      name: `input_${this.counter++}`,
       placeholder: "Введите значение",
-      min: 0,
-      max: 100,
-      step: 5,
-      required: true,
+      maxlength: 50,
+      value: "",
+      readonly: false,
+      disabled: false,
     };
   }
 
@@ -39,21 +39,24 @@ class FormElementGenerator {
     item.className = "generated-item";
     item.dataset.id = config.id;
 
+    const readonlyAttr = config.readonly ? 'readonly' : '';
+    const disabledAttr = config.disabled ? 'disabled' : '';
+
     item.innerHTML = `
       <div class="generated-preview">
         <label>
-          <span class="preview-label">${config.label}</span>
-          <input type="range" min="${config.min}" max="${config.max}" step="${config.step}" placeholder="${config.placeholder}" ${config.required ? "required" : ""} />
+          <span class="preview-label">Поле: <code>${config.name}</code></span>
+          <input type="text" placeholder="${config.placeholder}" maxlength="${config.maxlength}" value="${config.value}" ${readonlyAttr} ${disabledAttr} />
         </label>
-        <div class="preview-meta">min=${config.min} · max=${config.max} · step=${config.step} · ${config.required ? "обязательно" : "необязательно"}</div>
+        <div class="preview-meta">maxlength=${config.maxlength} · ${config.readonly ? "readonly" : ""} ${config.disabled ? "disabled" : ""}</div>
       </div>
       <div class="generated-controls">
-        <label>Подпись<input type="text" name="label" value="${config.label}"></label>
-        <label>Placeholder<input type="text" name="placeholder" value="${config.placeholder}"></label>
-        <label>min<input type="number" name="min" min="0" max="1000" value="${config.min}"></label>
-        <label>max<input type="number" name="max" min="1" max="2000" value="${config.max}"></label>
-        <label>step<input type="number" name="step" min="1" max="500" value="${config.step}"></label>
-        <label class="inline"><input type="checkbox" name="required" ${config.required ? "checked" : ""}> required</label>
+        <label>name<input type="text" name="name" value="${config.name}"></label>
+        <label>placeholder<input type="text" name="placeholder" value="${config.placeholder}"></label>
+        <label>maxlength<input type="number" name="maxlength" min="1" max="500" value="${config.maxlength}"></label>
+        <label>value<input type="text" name="value" value="${config.value}"></label>
+        <label class="inline"><input type="checkbox" name="readonly" ${config.readonly ? "checked" : ""}> readonly</label>
+        <label class="inline"><input type="checkbox" name="disabled" ${config.disabled ? "checked" : ""}> disabled</label>
         <button type="button" class="btn btn-outline-danger" data-remove>Удалить</button>
       </div>
     `;
@@ -84,36 +87,41 @@ class FormElementGenerator {
       return field ? mapper(field.value) : null;
     };
 
-    const min = Number(get("input[name='min']")) || 0;
-    const max = Number(get("input[name='max']")) || 0;
-    const step = Number(get("input[name='step']")) || 1;
-    const required = !!item.querySelector("input[name='required']")?.checked;
+    const maxlength = Number(get("input[name='maxlength']")) || 50;
+    const readonly = !!item.querySelector("input[name='readonly']")?.checked;
+    const disabled = !!item.querySelector("input[name='disabled']")?.checked;
 
     return {
       ...fallback,
-      label: get("input[name='label']") || fallback.label,
+      name: get("input[name='name']") || fallback.name,
       placeholder: get("input[name='placeholder']") || fallback.placeholder,
-      min: min > 0 ? min : 0,
-      max: max > min ? max : min + 1,
-      step: step > 0 ? step : 1,
-      required,
+      maxlength: maxlength > 0 ? maxlength : 50,
+      value: get("input[name='value']") || fallback.value,
+      readonly,
+      disabled,
     };
   }
 
   updatePreview(item, config) {
     const labelEl = item.querySelector(".preview-label");
-    const inputEl = item.querySelector("input[type='range']");
+    const inputEl = item.querySelector("input[type='text']");
     const metaEl = item.querySelector(".preview-meta");
-    if (labelEl) labelEl.textContent = config.label;
+    
+    if (labelEl) labelEl.innerHTML = `Поле: <code>${config.name}</code>`;
     if (inputEl) {
-      inputEl.min = config.min;
-      inputEl.max = config.max;
-      inputEl.step = config.step;
       inputEl.placeholder = config.placeholder;
-      inputEl.required = config.required;
+      inputEl.maxLength = config.maxlength;
+      inputEl.value = config.value;
+      inputEl.readOnly = config.readonly;
+      inputEl.disabled = config.disabled;
     }
     if (metaEl) {
-      metaEl.textContent = `min=${config.min} · max=${config.max} · step=${config.step} · ${config.required ? "обязательно" : "необязательно"}`;
+      const flags = [
+        `maxlength=${config.maxlength}`,
+        config.readonly ? "readonly" : null,
+        config.disabled ? "disabled" : null,
+      ].filter(Boolean).join(" · ");
+      metaEl.textContent = flags;
     }
     item.dataset.config = JSON.stringify(config);
   }

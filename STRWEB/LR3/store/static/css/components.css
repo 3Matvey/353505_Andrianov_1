@@ -487,6 +487,31 @@ ul li:nth-child(2n) {
   align-content: space-between;
 }
 
+/* 3D hover / tilt effect */
+.products-grid {
+  /* create a 3D context for children */
+  perspective: 1000px;
+}
+
+.product-item {
+  transform-style: preserve-3d;
+  transition: transform 260ms cubic-bezier(.2,.9,.2,1), box-shadow 260ms ease;
+  will-change: transform;
+}
+
+.product-item.is-tilting {
+  box-shadow: 0 12px 30px rgba(0,0,0,0.18), 0 6px 12px rgba(0,0,0,0.12);
+}
+
+.product-item .price {
+  transition: transform 260ms cubic-bezier(.2,.9,.2,1);
+}
+
+/* small pop when hovered (fallback if JS disabled) */
+.product-item:hover {
+  transform: translateY(-6px) scale(1.01);
+}
+
 .product-item .price {
   justify-self: end;
 }
