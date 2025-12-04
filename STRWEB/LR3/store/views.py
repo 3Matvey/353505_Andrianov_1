@@ -280,6 +280,14 @@ def students(request):
     return render(request, 'store/students.html')
 
 
+def chart_page(request):
+    """Chart.js demo page for lab task: plots series approximation and exact function.
+
+    Uses client-side JS to compute series terms and draw Chart.js graphs.
+    """
+    return render(request, 'store/chart.html')
+
+
 def is_employee_or_super(user):
     return user.is_superuser or hasattr(user, "employee_profile")
 
