@@ -1,21 +1,69 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Регистрация — Zoo Shop{% endblock %}
 {% block content %}
   <h1 class="mb-4">Регистрация</h1>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.non_field_errors }}
-    {{ form.username.label_tag }} {{ form.username }}<br>
-    {{ form.email.label_tag }}    {{ form.email }}<br>
-    {{ form.birth_date.label_tag }} {{ form.birth_date }}
+  
+  <div id="ageCalculatorRoot">
+    <form method="post" id="signupForm">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      {{ form.username.label_tag }} {{ form.username }}<br>
+      {{ form.email.label_tag }}    {{ form.email }}<br>
+      {{ form.birth_date.label_tag }} 
+      <input type="date" name="birth_date" id="birthDateInput">
 {% for error in form.birth_date.errors %}
   <div class="text-danger">{{ error }}</div>
 {% endfor %}
-    <br>
-    {{ form.phone.label_tag }}    {{ form.phone }}<br>
-    {{ form.password1.label_tag }} {{ form.password1 }}<br>
-    {{ form.password2.label_tag }} {{ form.password2 }}<br>
-    <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
-  </form>
+      <br>
+      {{ form.phone.label_tag }}    {{ form.phone }}<br>
+      {{ form.password1.label_tag }} {{ form.password1 }}<br>
+      {{ form.password2.label_tag }} {{ form.password2 }}<br>
+      <button type="submit" class="btn btn-primary" id="submitBtn">Зарегистрироваться</button>
+    </form>
+
+    <div id="resultContainer" class="hidden mt-3" style="display: none;">
+      <div id="ageDisplay" class="alert alert-info"></div>
+      <div id="weekdayDisplay" class="alert alert-success hidden" style="display: none;"></div>
+    </div>
+  </div>
+
+  <script>
+    // Simple age calculator for signup form
+    document.addEventListener('DOMContentLoaded', function() {
+      const birthDateInput = document.getElementById('birthDateInput');
+      const submitBtn = document.getElementById('submitBtn');
+      const form = document.getElementById('signupForm');
+      let minorAlertShown = false;
+
+      if (birthDateInput) {
+        birthDateInput.addEventListener('change', function() {
+          if (this.value) {
+            const birthDate = new Date(this.value);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+              age--;
+            }
+
+            if (age < 18) {
+              if (!minorAlertShown) {
+                alert('⚠️ Внимание! Вам еще нет 18 лет.\n\nДля использования этого сайта требуется разрешение родителей или опекунов.');
+                minorAlertShown = true;
+              }
+              submitBtn.disabled = true;
+              submitBtn.classList.add('disabled');
+            } else {
+              minorAlertShown = false;
+              submitBtn.disabled = false;
+              submitBtn.classList.remove('disabled');
+            }
+          }
+        });
+      }
+    });
+  </script>
   
 {% endblock %}

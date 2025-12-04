@@ -31,6 +31,13 @@ class ProductPagination {
 		this.pageSize = 3;
 
 		this.init();
+		// expose instance for helpers (so UI buttons can find the active pagination)
+		try {
+			if (this.root) this.root.__productPaginationInstance = this;
+			window.productPaginationInstance = this;
+		} catch (e) {
+			// ignore
+		}
 	}
 
 	init() {
@@ -209,5 +216,52 @@ class ProductPagination {
 document.addEventListener('DOMContentLoaded', () => {
 	const root = document.getElementById('productPaginationRoot');
 	if (root) new ProductPagination(root);
+});
+
+// Expose speak helper and instance hook
+function speakProductsInstance(instance, options = { all: false }) {
+	if (!window.speechSynthesis) {
+		alert('Speech Synthesis API не поддерживается в этом браузере.');
+		return;
+	}
+
+	const products = options.all ? instance.allProducts : instance.getCurrentPageProducts();
+	if (!products || products.length === 0) {
+		const m = new SpeechSynthesisUtterance('Товары не найдены.');
+		m.lang = 'ru-RU';
+		window.speechSynthesis.cancel();
+		window.speechSynthesis.speak(m);
+		return;
+	}
+
+	let text = `Список товаров. Всего ${products.length} элементов. `;
+	products.forEach((p, i) => {
+		const name = p.name || '';
+		const price = p.price ? String(p.price) : 'цена не указана';
+		text += `${i+1}: ${name}, ${price} рублей. `;
+	});
+
+	const utter = new SpeechSynthesisUtterance(text);
+	utter.lang = 'ru-RU';
+	window.speechSynthesis.cancel();
+	window.speechSynthesis.speak(utter);
+}
+
+// Wire speak button once pagination instance exists
+document.addEventListener('DOMContentLoaded', () => {
+	const root = document.getElementById('productPaginationRoot');
+	if (!root) return;
+	// small delay to allow ProductPagination to attach
+	setTimeout(() => {
+		// try to get existing instance by reading a stored ref on root
+		const instance = root.__productPaginationInstance || window.productPaginationInstance || null;
+		const speakBtn = document.getElementById('speakProductsBtn');
+		if (speakBtn) {
+			speakBtn.addEventListener('click', function() {
+				if (instance) speakProductsInstance(instance, { all: false });
+				else alert('Пагинация ещё не инициализирована. Обновите страницу.');
+			});
+		}
+	}, 200);
 });
 

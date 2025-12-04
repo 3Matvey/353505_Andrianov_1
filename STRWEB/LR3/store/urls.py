@@ -47,6 +47,7 @@ urlpatterns = [
     path('vacancies/', views.vacancies, name='vacancies'),
     path('promocodes/', views.promocodes, name='promocodes'),
     path('slider/', views.slider_page, name='slider'),
+    path('students/', views.students, name='students'),
 
     # Корзина
     path('cart/', views.cart_view, name='cart'),

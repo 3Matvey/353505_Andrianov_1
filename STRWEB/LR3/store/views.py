@@ -275,6 +275,11 @@ def slider_page(request):
     return render(request, 'store/slider.html', {"slides": slides})
 
 
+def students(request):
+    """Page for managing school students and finding duplicates (both prototype and class-based inheritance)."""
+    return render(request, 'store/students.html')
+
+
 def is_employee_or_super(user):
     return user.is_superuser or hasattr(user, "employee_profile")
 

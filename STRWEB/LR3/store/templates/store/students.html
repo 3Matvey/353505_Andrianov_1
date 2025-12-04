@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Управление учениками — Zoo Shop{% endblock %}
+{% block content %}
+<div class="container mt-5">
+  <h1 class="mb-4">Управление учениками школы</h1>
+
+  <ul class="nav nav-tabs mb-4" role="tablist">
+    <li class="nav-item" role="presentation">
+      <button class="nav-link active" id="prototype-tab" data-bs-toggle="tab" data-bs-target="#prototype" type="button" role="tab" aria-controls="prototype" aria-selected="true">
+        Прототипное наследование
+      </button>
+    </li>
+    <li class="nav-item" role="presentation">
+      <button class="nav-link" id="class-tab" data-bs-toggle="tab" data-bs-target="#class-variant" type="button" role="tab" aria-controls="class-variant" aria-selected="false">
+        Class / Extends
+      </button>
+    </li>
+  </ul>
+
+  <!-- Prototype variant -->
+  <div class="tab-content">
+    <div class="tab-pane fade show active" id="prototype" role="tabpanel" aria-labelledby="prototype-tab">
+      <h3>Вариант 1: Прототипное наследование</h3>
+      
+      <form id="prototypeForm" class="mb-4 p-3 border rounded">
+        <div class="row">
+          <div class="col-md-4">
+            <input type="text" id="prototypeName" placeholder="Имя ученика" class="form-control mb-2" required>
+          </div>
+          <div class="col-md-4">
+            <input type="text" id="prototypeSurname" placeholder="Фамилия ученика" class="form-control mb-2" required>
+          </div>
+          <div class="col-md-4">
+            <input type="text" id="prototypeClass" placeholder="Класс (например, 9А)" class="form-control mb-2" required>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Добавить ученика</button>
+      </form>
+
+      <div class="row">
+        <div class="col-md-6">
+          <h4>Список учеников:</h4>
+          <div id="prototypeStudentsList" class="list-group"></div>
+        </div>
+        <div class="col-md-6">
+          <h4>Однофамильцы:</h4>
+          <div id="prototypeDuplicates" class="alert alert-info"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Class variant -->
+    <div class="tab-pane fade" id="class-variant" role="tabpanel" aria-labelledby="class-tab">
+      <h3>Вариант 2: Class / Extends</h3>
+      
+      <form id="classForm" class="mb-4 p-3 border rounded">
+        <div class="row">
+          <div class="col-md-4">
+            <input type="text" id="className" placeholder="Имя ученика" class="form-control mb-2" required>
+          </div>
+          <div class="col-md-4">
+            <input type="text" id="classSurname" placeholder="Фамилия ученика" class="form-control mb-2" required>
+          </div>
+          <div class="col-md-4">
+            <input type="text" id="classClass" placeholder="Класс (например, 9А)" class="form-control mb-2" required>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Добавить ученика</button>
+      </form>
+
+      <div class="row">
+        <div class="col-md-6">
+          <h4>Список учеников:</h4>
+          <div id="classStudentsList" class="list-group"></div>
+        </div>
+        <div class="col-md-6">
+          <h4>Однофамильцы:</h4>
+          <div id="classDuplicates" class="alert alert-info"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'js/studentsPrototype.js' %}"></script>
+<script src="{% static 'js/studentsClass.js' %}"></script>
+
+{% endblock %}
