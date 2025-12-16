@@ -1,5 +1,3 @@
-// Variant 1: Prototype-based inheritance
-
 // Base class (Person)
 function Person(name, surname) {
   this.name = name;
@@ -22,7 +20,6 @@ Person.prototype.setSurname = function(surname) {
   this.surname = surname;
 };
 
-// Child class (Student) - inherits from Person
 function Student(name, surname, schoolClass) {
   Person.call(this, name, surname);
   this.schoolClass = schoolClass;

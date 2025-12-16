@@ -11,6 +11,48 @@
 {% block content %}
   <h1>О компании</h1>
 
+  <!-- Full-screen parallax hero (parrots theme) -->
+  <section id="top" style="position:relative; width:100%; height:60vh; min-height:320px; overflow:hidden;">
+    <style>
+      /* Hero layout adjustments for better parrot composition */
+      #top { background: transparent; }
+      #top img { pointer-events: none; }
+      #top #bg { position:absolute; left:0; top:0; width:100%; height:100%; object-fit:cover; z-index:5; }
+      #top #text { position:relative; z-index:40; color:#fff; font-size:3rem; text-align:center; margin:0; padding-top:1.5rem; text-shadow:0 6px 20px rgba(0,0,0,0.35); }
+      /* main parrot: centered, contained and moderate size */
+      #top #parrot { position:absolute; left:50%; transform:translateX(-50%) translateY(0); bottom:6%; width:260px; height:auto; max-height:56%; z-index:50; transform-origin:50% 85%; transition:transform .2s ease; }
+      /* flying parrot layers */
+      .parrot-layer { position:absolute; height:auto; width:120px; object-fit:contain; transform-origin:center bottom; transition:transform .15s linear, opacity .2s linear; }
+      #parrot1 { left:10%; bottom:6%; z-index:45; }
+      #parrot2 { left:28%; bottom:8%; z-index:46; width:110px; }
+        /* gif parrot styling */
+        .gif-parrot { position:absolute; bottom:4%; left:64%; width:140px; z-index:48; object-fit:contain; transform-origin:center bottom; transition:transform .18s ease, opacity .25s ease; pointer-events:none; }
+      #parrot3 { left:70%; bottom:10%; z-index:44; width:140px; }
+      #parrot4 { left:82%; bottom:6%; z-index:43; width:120px; }
+      @media (max-width:800px){
+        #top #parrot { width:160px; }
+        .parrot-layer{ width:90px; }
+          .gif-parrot{ width:100px; left:68%; bottom:6%; }
+        #top #text{ font-size:2rem }
+      }
+    </style>
+    <img id="bg" src="{% static 'media/sample/bg.svg' %}" alt="bg" />
+    <!-- <h2 id="text">Попугаи Zoo Shop</h2> -->
+    <!-- main parrot: use GIF so it matches flying parrots -->
+    <img id="parrot" src="{% static 'media/sample/giphy.gif' %}" alt="parrot" />
+    <img id="clouds_1" src="{% static 'media/sample/clouds_1.svg' %}" alt="clouds1" style="position:absolute;left:0;top:0;width:160%;height:100%;z-index:20;opacity:0.95"/>
+    <img id="clouds_2" src="{% static 'media/sample/clouds_2.svg' %}" alt="clouds2" style="position:absolute;left:0;top:0;width:160%;height:100%;z-index:21;opacity:0.9;"/>
+    <!-- multiple parrots that will fly up on scroll -->
+    <!-- replace static parrots with the GIF; mirror some so they don't all face same way -->
+    <img class="parrot-layer" id="parrot1" src="{% static 'media/sample/giphy.gif' %}" alt="parrot1" data-speed="0.45" />
+    <img class="parrot-layer mirrored" id="parrot2" src="{% static 'media/sample/giphy.gif' %}" alt="parrot2" data-speed="0.55" data-mirror="true" />
+    <img class="parrot-layer" id="parrot3" src="{% static 'media/sample/giphy.gif' %}" alt="parrot3" data-speed="0.4" />
+    <img class="parrot-layer mirrored" id="parrot4" src="{% static 'media/sample/giphy.gif' %}" alt="parrot4" data-speed="0.5" data-mirror="true" />
+    <!-- optional GIF: place a giphy.gif into static/media/sample/giphy.gif to enable this -->
+    <img id="gifParrot" class="gif-parrot" src="{% static 'media/sample/giphy.gif' %}" alt="giphy parrot" data-speed="0.7" style="display:block;" />
+  </section>
+  <script src="{% static 'js/parallaxAbout.js' %}"></script>
+
   {% for block in info_blocks %}
     <h2>{{ block.title }}</h2>
     <div>{{ block.content|linebreaks }}</div>

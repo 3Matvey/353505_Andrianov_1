@@ -1,11 +1,3 @@
-/* Client-side product pagination
-	 - reads products JSON from `data-products` on root `#productPaginationRoot`
-	 - renders products into `#productContainer`
-	 - renders pagination into `#paginationNav`
-	 - supports page size select `#pageSize` (3,5,10)
-	 - saves current page & pageSize to localStorage to persist across reloads
-*/
-
 class ProductPagination {
 	constructor(root) {
 		if (!root) return;
@@ -16,7 +8,6 @@ class ProductPagination {
 		this.storageKey = 'productPaginationState';
 
 		this.allProducts = [];
-		this.endpoint = root.getAttribute('data-endpoint') || null;
 		const raw = root.getAttribute('data-products');
 		if (raw) {
 			try {
@@ -31,6 +22,7 @@ class ProductPagination {
 		this.pageSize = 3;
 
 		this.init();
+
 		// expose instance for helpers (so UI buttons can find the active pagination)
 		try {
 			if (this.root) this.root.__productPaginationInstance = this;
@@ -43,24 +35,10 @@ class ProductPagination {
 	init() {
 		this.attachEvents();
 		this.restoreState();
-		if (this.endpoint) {
-			// fetch products from server (apply current querystring)
-			const url = this.endpoint + window.location.search;
-			fetch(url, { credentials: 'same-origin', headers: { 'X-Requested-With': 'XMLHttpRequest' } })
-				.then(resp => resp.json())
-				.then(data => {
-					if (Array.isArray(data.products)) this.allProducts = data.products;
-					// ensure currentPage is within range
-					if (this.currentPage > this.totalPages) this.currentPage = 1;
-					this.render();
-				})
-				.catch(err => {
-					console.error('Failed to load products JSON', err);
-					this.render();
-				});
-		} else {
-			this.render();
-		}
+
+		// рендерим что уже есть в allProducts
+		if (this.currentPage > this.totalPages) this.currentPage = 1;
+		this.render();
 	}
 
 	attachEvents() {
@@ -154,7 +132,10 @@ class ProductPagination {
 						<meta itemprop="sku" content="${sku}">
 					</header>
 					<div class="price" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
-						<span class="badge bg-primary rounded-pill"><span itemprop="price">${price}</span> <span itemprop="priceCurrency" content="BYN">р.</span></span>
+						<span class="badge bg-primary rounded-pill">
+							<span itemprop="price">${price}</span>
+							<span itemprop="priceCurrency" content="BYN">р.</span>
+						</span>
 						<link itemprop="availability" href="https://schema.org/InStock" />
 					</div>
 				</article>`;
@@ -185,8 +166,11 @@ class ProductPagination {
 			if (end > pages) { end = pages; start = end - maxButtons + 1; }
 		}
 		for (let i = start; i <= end; i++) {
-			if (i === this.currentPage) html += `<li class="page-item active"><span class="page-link">${i}</span></li>`;
-			else html += `<li class="page-item"><button type="button" class="page-link" data-page="${i}">${i}</button></li>`;
+			if (i === this.currentPage) {
+				html += `<li class="page-item active"><span class="page-link">${i}</span></li>`;
+			} else {
+				html += `<li class="page-item"><button type="button" class="page-link" data-page="${i}">${i}</button></li>`;
+			}
 		}
 		// next
 		if (this.currentPage < pages) {
@@ -238,7 +222,7 @@ function speakProductsInstance(instance, options = { all: false }) {
 	products.forEach((p, i) => {
 		const name = p.name || '';
 		const price = p.price ? String(p.price) : 'цена не указана';
-		text += `${i+1}: ${name}, ${price} рублей. `;
+		text += `${i + 1}: ${name}, ${price} рублей. `;
 	});
 
 	const utter = new SpeechSynthesisUtterance(text);
@@ -251,9 +235,8 @@ function speakProductsInstance(instance, options = { all: false }) {
 document.addEventListener('DOMContentLoaded', () => {
 	const root = document.getElementById('productPaginationRoot');
 	if (!root) return;
-	// small delay to allow ProductPagination to attach
+	// небольшая задержка, чтобы ProductPagination успел инициализироваться
 	setTimeout(() => {
-		// try to get existing instance by reading a stored ref on root
 		const instance = root.__productPaginationInstance || window.productPaginationInstance || null;
 		const speakBtn = document.getElementById('speakProductsBtn');
 		if (speakBtn) {
@@ -264,4 +247,3 @@ document.addEventListener('DOMContentLoaded', () => {
 		}
 	}, 200);
 });
-

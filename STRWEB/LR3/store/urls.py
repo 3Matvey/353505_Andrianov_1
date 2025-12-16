@@ -49,6 +49,7 @@ urlpatterns = [
     path('slider/', views.slider_page, name='slider'),
     path('students/', views.students, name='students'),
     path('chart/', views.chart_page, name='chart'),
+    path('scroll-anim/', views.scroll_anim, name='scroll_anim'),
 
     # Корзина
     path('cart/', views.cart_view, name='cart'),

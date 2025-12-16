@@ -1,8 +1,6 @@
-// chartTask.js — computes series and draws Chart.js chart for the LR3 task
 (function(){
   'use strict';
 
-  // Target function and its series for Variant 1 from the assignment:
   // F(x) = ln((x+1)/(x-1))
   // Series for |x|>1: F(x) = 2 * sum_{k=0..infty} 1/((2k+1) * x^{2k+1})
 

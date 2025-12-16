@@ -1,0 +1,38 @@
+{% load static %}
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Анимация при скроллинге — ЛР3</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+  <style>
+    body { font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
+    .stage { max-width: 1100px; margin: 2rem auto; }
+    .spacer { height: 120vh; }
+    .anim-row { display:flex; gap:1rem; justify-content:center; align-items:center; flex-wrap:wrap; }
+    .anim-item { width: 260px; height: 180px; overflow:hidden; position:relative; background:#fff; border-radius:8px; box-shadow:0 6px 18px rgba(0,0,0,.08); }
+    .anim-item img { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); will-change:transform; transition:transform 0.1s linear; }
+    .note { text-align:center; color:#555; margin-bottom:1rem; }
+  </style>
+</head>
+<body>
+  <div class="container stage">
+    <h1 class="mb-3">Анимация при скроллинге</h1>
+    <p class="note">Прокрутите страницу — изображения движутся с разной скоростью (парраллакс). Эффект работает в обе стороны (вперёд и назад).</p>
+
+    <div class="anim-row" id="animRow">
+      <div class="anim-item" data-speed="0.25"><img src="{% static 'media/sample/parrot_user.avif' %}" alt="parrot" /></div>
+      <div class="anim-item" data-speed="0.45"><img src="{% static 'media/sample/parrot_user.avif' %}" alt="parrot" /></div>
+      <div class="anim-item" data-speed="0.12"><img src="{% static 'media/sample/parrot_user.avif' %}" alt="parrot" /></div>
+      <div class="anim-item" data-speed="0.35"><img src="{% static 'media/sample/parrot_user.avif' %}" alt="parrot" /></div>
+    </div>
+
+    <div class="spacer"></div>
+    <p class="text-center">Дополнительный контент для обратного скролла (прокрутите вверх)</p>
+    <div class="spacer"></div>
+  </div>
+
+  <script src="{% static 'js/scrollAnim.js' %}"></script>
+</body>
+</html>

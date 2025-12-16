@@ -288,6 +288,11 @@ def chart_page(request):
     return render(request, 'store/chart.html')
 
 
+def scroll_anim(request):
+    """Page demonstrating scroll-based animations (parallax, forward/reverse)."""
+    return render(request, 'store/scroll_anim.html')
+
+
 def is_employee_or_super(user):
     return user.is_superuser or hasattr(user, "employee_profile")
 
